@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evoque Consulting — Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --royal:       #2B44B0;
+    --royal-light: #3D58C8;
+    --royal-dim:   rgba(43,68,176,0.08);
+    --royal-rule:  rgba(43,68,176,0.22);
+    --sand:        #D9C9A8;
+    --sand-light:  #EDE4D0;
+    --sand-pale:   #F7F3EC;
+    --bronze:      #A8845A;
+    --bronze-lt:   #C09A6E;
+    --bronze-rule: rgba(168,132,90,0.28);
+    --bg:          #F5F2EC;
+    --bg-alt:      #EDE7DA;
+    --bg-dark:     #1A140E;
+    --ink:         #1A140E;
+    --text:        #3A2E22;
+    --muted:       #7A6E60;
+    --rule:        rgba(168,132,90,0.2);
+    --rule-mid:    rgba(168,132,90,0.35);
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'Cormorant Garamond',serif; background:var(--bg); color:var(--ink); line-height:1.7; overflow-x:hidden; }
+  ::selection { background:rgba(43,68,176,0.12); }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    background:rgba(245,242,236,0.97); border-bottom:0.5px solid var(--rule-mid);
+    height:64px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 56px; backdrop-filter:blur(6px);
+  }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:15px; font-weight:500; letter-spacing:0.22em; color:var(--royal); text-transform:uppercase; text-decoration:none; }
+  .nav-links { display:flex; list-style:none; gap:4px; }
+  .nav-links a {
+    display:block; padding:9px 18px; font-family:'Jost',sans-serif; font-size:10px;
+    font-weight:400; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted);
+    text-decoration:none; border:0.5px solid transparent; transition:all 0.2s;
+  }
+  .nav-links a:hover { color:var(--royal); border-color:var(--royal-rule); }
+  .nav-links a.active { color:var(--royal); border-color:var(--royal-rule); background:var(--royal-dim); }
+
+  /* ── PROGRESS ── */
+  .prog { position:fixed; top:64px; left:0; height:2px; background:var(--royal); z-index:300; width:0; transition:width 0.1s; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height:100vh; background:var(--bg-dark);
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:80px 80px 80px; position:relative; overflow:hidden;
+  }
+  .h-ring { position:absolute; border-radius:50%; pointer-events:none; }
+  .h-ring-1 { top:-160px; right:-160px; width:720px; height:720px; border:0.5px solid rgba(43,68,176,0.1); }
+  .h-ring-2 { top:20px; right:20px; width:460px; height:460px; border:0.5px solid rgba(168,132,90,0.07); }
+  .h-eye { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.26em; text-transform:uppercase; color:var(--sand); margin-bottom:2.5rem; display:flex; align-items:center; gap:12px; }
+  .h-eye::before { content:''; width:32px; height:1px; background:var(--bronze); }
+  .h-title { font-family:'Playfair Display',serif; font-size:clamp(52px,7.5vw,104px); font-weight:400; line-height:0.96; color:var(--sand-light); max-width:860px; margin-bottom:3rem; letter-spacing:-0.01em; }
+  .h-title em { font-style:italic; color:var(--bronze-lt); }
+  .h-rule { width:100%; height:0.5px; background:rgba(168,132,90,0.2); margin-bottom:2.5rem; }
+  .h-bottom { display:flex; justify-content:space-between; align-items:flex-end; gap:32px; }
+  .h-desc { font-size:20px; font-weight:300; color:rgba(217,201,168,0.55); max-width:440px; line-height:1.75; }
+  .h-meta { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(217,201,168,0.35); line-height:2.6; text-align:right; }
+  .h-meta span { color:var(--bronze); }
+
+  /* ── SECTION SHELLS ── */
+  section { padding:100px 0; border-bottom:0.5px solid var(--rule-mid); }
+  #scope       { background:var(--bg); }
+  #deliverables{ background:var(--bg-alt); }
+  #timeline    { background:var(--bg); }
+  #costing     { background:var(--bg-alt); }
+  #outcomes    { background:var(--bg); }
+  #cta         { background:var(--bg-dark); border-bottom:none; }
+  .container   { max-width:1180px; margin:0 auto; padding:0 80px; }
+
+  /* ── SECTION HEADER ── */
+  .sh { display:grid; grid-template-columns:180px 1fr; gap:56px; align-items:start; margin-bottom:64px; }
+  .sh-num { font-family:'Playfair Display',serif; font-size:72px; font-weight:400; color:rgba(43,68,176,0.1); line-height:1; margin-bottom:6px; }
+  .sh-lbl { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.26em; text-transform:uppercase; color:var(--bronze); }
+  .sh-title { font-family:'Playfair Display',serif; font-size:clamp(36px,4.2vw,56px); font-weight:400; line-height:1.1; color:var(--ink); }
+  .sh-title em { font-style:italic; color:var(--royal); }
+
+  /* ── TEXT ── */
+  .intro { font-size:21px; font-weight:300; color:var(--text); line-height:1.75; max-width:700px; margin-bottom:3rem; }
+  .body  { font-size:16px; font-weight:300; color:var(--muted); line-height:1.85; max-width:700px; margin-bottom:1.5rem; }
+
+  /* ── SCOPE: PILLARS ── */
+  .pillars { display:flex; flex-direction:column; gap:0; margin-bottom:3rem; }
+  .pillar { border:0.5px solid var(--rule-mid); margin-bottom:-0.5px; background:#fff; transition:background 0.2s; }
+  .pillar-header { display:grid; grid-template-columns:56px 1fr auto; align-items:center; gap:24px; padding:24px 32px; cursor:pointer; user-select:none; }
+  .pillar-num { font-family:'Playfair Display',serif; font-size:28px; font-weight:400; color:rgba(43,68,176,0.18); line-height:1; }
+  .pillar-name { font-family:'Playfair Display',serif; font-size:22px; font-weight:500; color:var(--ink); }
+  .pillar-tag { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--bronze); border:0.5px solid var(--bronze-rule); padding:5px 12px; white-space:nowrap; }
+  .pillar-toggle { width:28px; height:28px; border:0.5px solid var(--rule-mid); background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; color:var(--muted); transition:all 0.2s; flex-shrink:0; font-family:serif; line-height:1; }
+  .pillar.open .pillar-toggle { border-color:var(--royal-rule); color:var(--royal); background:var(--royal-dim); }
+  .pillar.open { background:var(--sand-pale); }
+  .pillar-body { display:none; border-top:0.5px solid var(--rule); padding:0 32px 28px 112px; }
+  .pillar.open .pillar-body { display:block; }
+  .sub-list { list-style:none; margin-top:20px; }
+  .sub-list li { display:flex; gap:16px; align-items:flex-start; padding:14px 0; border-bottom:0.5px solid var(--rule); font-size:16px; font-weight:300; color:var(--text); line-height:1.6; }
+  .sub-list li:last-child { border-bottom:none; }
+  .sub-list li::before { content:'–'; color:var(--royal); flex-shrink:0; margin-top:1px; }
+  .sub-note { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.1em; color:var(--muted); margin-top:6px; }
+
+  /* ── DELIVERABLES ── */
+  .del-grid { display:grid; grid-template-columns:repeat(2, 1fr); gap:0; border:0.5px solid var(--rule-mid); margin-bottom:3rem; background:#fff; }
+  .del-card { padding:40px 36px; border-right:0.5px solid var(--rule-mid); border-bottom:0.5px solid var(--rule-mid); transition:background 0.2s; }
+  .del-card:hover { background:var(--sand-pale); }
+  .del-card:nth-child(2n) { border-right:none; }
+  .del-card:nth-last-child(-n+2) { border-bottom:none; }
+  .del-idx { font-family:'Playfair Display',serif; font-size:40px; font-weight:400; color:rgba(43,68,176,0.1); line-height:1; margin-bottom:12px; }
+  .del-name { font-family:'Playfair Display',serif; font-size:21px; font-weight:500; color:var(--ink); margin-bottom:10px; }
+  .del-items { list-style:none; }
+  .del-items li { font-size:14px; font-weight:300; color:var(--muted); padding:7px 0; border-bottom:0.5px solid var(--rule); display:flex; gap:10px; line-height:1.5; }
+  .del-items li:last-child { border-bottom:none; }
+  .del-items li::before { content:'·'; color:var(--bronze); flex-shrink:0; font-size:16px; line-height:1.2; }
+
+  /* ── TIMELINE ── */
+  .tl-wrap { margin-bottom:3rem; }
+  .tl-row { display:grid; grid-template-columns:200px 1px 1fr; gap:0 40px; position:relative; }
+  .tl-left { text-align:right; padding:28px 0; }
+  .tl-wk { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--royal); margin-bottom:6px; }
+  .tl-type { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.12em; text-transform:uppercase; padding:4px 10px; display:inline-block; border:0.5px solid; }
+  .tl-type.project { color:var(--royal); border-color:var(--royal-rule); background:var(--royal-dim); }
+  .tl-type.retainer { color:var(--bronze); border-color:var(--bronze-rule); background:rgba(168,132,90,0.06); }
+  .tl-line { position:relative; background:var(--rule-mid); }
+  .tl-dot { position:absolute; top:32px; left:50%; transform:translateX(-50%); width:10px; height:10px; border-radius:50%; background:var(--royal); border:2px solid var(--bg); box-shadow:0 0 0 1px var(--royal); }
+  .tl-dot.retainer-dot { background:var(--bronze); box-shadow:0 0 0 1px var(--bronze); }
+  .tl-content { padding:28px 0 40px; border-bottom:0.5px solid var(--rule); }
+  .tl-row:last-child .tl-content { border-bottom:none; }
+  .tl-ti { font-family:'Playfair Display',serif; font-size:22px; font-weight:500; color:var(--ink); margin-bottom:8px; }
+  .tl-desc { font-size:15px; font-weight:300; color:var(--muted); line-height:1.75; max-width:560px; }
+  .tl-pills { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .tl-pill { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.14em; text-transform:uppercase; padding:4px 12px; border:0.5px solid var(--rule-mid); color:var(--muted); background:#fff; }
+
+  /* ── COSTING ── */
+  .cost-intro { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; border:0.5px solid var(--rule-mid); margin-bottom:2rem; background:#fff; }
+  .cost-block { padding:44px 40px; border-right:0.5px solid var(--rule-mid); }
+  .cost-block:last-child { border-right:none; }
+  .cost-type { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.24em; text-transform:uppercase; color:var(--bronze); margin-bottom:10px; }
+  .cost-name { font-family:'Playfair Display',serif; font-size:24px; font-weight:500; color:var(--ink); }
+  .cost-price { font-family:'Playfair Display',serif; font-size:44px; font-weight:400; color:var(--royal); line-height:1; margin:24px 0; letter-spacing:-0.01em; }
+  .cost-price span { font-size:13px; color:var(--muted); font-family:'Jost',sans-serif; letter-spacing:0.1em; margin-left:6px; }
+  .cost-list { list-style:none; margin-top:20px; }
+  .cost-list li { font-size:14px; font-weight:300; color:var(--muted); padding:9px 0; border-bottom:0.5px solid var(--rule); display:flex; gap:12px; line-height:1.5; }
+  .cost-list li:last-child { border-bottom:none; }
+  .cost-list li::before { content:'–'; color:var(--bronze); flex-shrink:0; font-size:12px; margin-top:1px; }
+  .cost-retainer-row { display:grid; grid-template-columns:repeat(3,1fr); border:0.5px solid var(--rule-mid); margin-bottom:2rem; background:#fff; margin-top:-0.5px; }
+  .cost-ret { padding:32px 36px; border-right:0.5px solid var(--rule-mid); }
+  .cost-ret:last-child { border-right:none; }
+  .cost-ret-lbl { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--bronze); margin-bottom:10px; }
+  .cost-ret-name { font-family:'Playfair Display',serif; font-size:18px; font-weight:500; color:var(--ink); margin-bottom:16px; }
+  .cost-ret-price { font-family:'Playfair Display',serif; font-size:32px; font-weight:400; color:var(--royal); line-height:1; margin-bottom:8px; }
+  .cost-ret-note { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.1em; color:var(--muted); text-transform:uppercase; }
+  .total-bar { background:var(--ink); padding:32px 40px; display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
+  .total-lbl { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(217,201,168,0.5); }
+  .total-sub { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.1em; color:rgba(217,201,168,0.3); margin-top:5px; text-transform:uppercase; }
+  .total-val { font-family:'Playfair Display',serif; font-size:36px; font-weight:400; color:var(--sand-light); }
+
+  /* ── OUTCOMES ── */
+  .outcomes-lead { display:grid; grid-template-columns:1fr 1fr; gap:0; border:0.5px solid var(--rule-mid); margin-bottom:2rem; background:#fff; }
+  .outcomes-lead-block { padding:48px 44px; border-right:0.5px solid var(--rule-mid); }
+  .outcomes-lead-block:last-child { border-right:none; }
+  .ol-phase { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.26em; text-transform:uppercase; color:var(--bronze); margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .ol-phase::before { content:''; width:18px; height:0.5px; background:var(--bronze); }
+  .ol-heading { font-family:'Playfair Display',serif; font-size:28px; font-weight:400; color:var(--ink); line-height:1.2; margin-bottom:20px; }
+  .ol-heading em { font-style:italic; color:var(--royal); }
+  .ol-body { font-size:16px; font-weight:300; color:var(--muted); line-height:1.85; }
+
+  .outcome-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:0.5px solid var(--rule-mid); margin-bottom:2rem; margin-top:-0.5px; }
+  .outcome-card { padding:36px 32px; border-right:0.5px solid var(--rule-mid); border-bottom:0.5px solid var(--rule-mid); background:#fff; transition:background 0.2s; position:relative; overflow:hidden; }
+  .outcome-card:hover { background:var(--sand-pale); }
+  .outcome-card:nth-child(3n) { border-right:none; }
+  .outcome-card:nth-last-child(-n+3) { border-bottom:none; }
+  .oc-pillar { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--bronze); margin-bottom:20px; }
+  .oc-stat { font-family:'Playfair Display',serif; font-size:48px; font-weight:400; color:var(--royal); line-height:1; margin-bottom:8px; letter-spacing:-0.02em; }
+  .oc-stat-note { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; }
+  .oc-name { font-family:'Playfair Display',serif; font-size:19px; font-weight:500; color:var(--ink); margin-bottom:10px; }
+  .oc-desc { font-size:14px; font-weight:300; color:var(--muted); line-height:1.8; }
+  .oc-corner { position:absolute; bottom:0; right:0; width:48px; height:48px; border-top:0.5px solid var(--rule); border-left:0.5px solid var(--rule); }
+
+  .outcomes-horizon { display:grid; grid-template-columns:120px 1fr; gap:40px; border:0.5px solid var(--rule-mid); padding:44px; background:#fff; margin-bottom:2rem; margin-top:-0.5px; align-items:start; }
+  .oh-label { font-family:'Playfair Display',serif; font-size:56px; font-weight:400; color:rgba(43,68,176,0.1); line-height:1; }
+  .oh-lbl-tag { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:var(--bronze); margin-top:6px; }
+  .oh-track { display:flex; flex-direction:column; gap:0; }
+  .oh-row { display:flex; gap:0; align-items:stretch; border-bottom:0.5px solid var(--rule); padding:20px 0; }
+  .oh-row:last-child { border-bottom:none; }
+  .oh-period { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--royal); width:100px; flex-shrink:0; padding-top:2px; }
+  .oh-divider { width:1px; background:var(--rule-mid); margin:0 24px; flex-shrink:0; }
+  .oh-content { flex:1; }
+  .oh-milestone { font-family:'Playfair Display',serif; font-size:18px; font-weight:500; color:var(--ink); margin-bottom:6px; }
+  .oh-detail { font-size:14px; font-weight:300; color:var(--muted); line-height:1.75; }
+  .oh-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .oh-tag { font-family:'Jost',sans-serif; font-size:9px; letter-spacing:0.14em; text-transform:uppercase; padding:3px 10px; border:0.5px solid var(--rule-mid); color:var(--muted); background:var(--bg); }
+  .oh-tag.royal { color:var(--royal); border-color:var(--royal-rule); background:var(--royal-dim); }
+  .oh-tag.bronze { color:var(--bronze); border-color:var(--bronze-rule); background:rgba(168,132,90,0.06); }
+
+  /* ── CTA ── */
+  #cta { padding:110px 0; text-align:center; }
+  .cta-pre { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.28em; text-transform:uppercase; color:var(--bronze-lt); margin-bottom:2.5rem; display:flex; align-items:center; justify-content:center; gap:14px; }
+  .cta-pre::before, .cta-pre::after { content:''; width:40px; height:0.5px; background:var(--bronze); }
+  .cta-title { font-family:'Playfair Display',serif; font-size:clamp(38px,5vw,68px); font-weight:400; color:var(--sand-light); line-height:1.1; margin-bottom:1.5rem; }
+  .cta-title em { font-style:italic; color:var(--bronze-lt); }
+  .cta-sub { font-size:19px; font-weight:300; color:rgba(217,201,168,0.45); margin-bottom:3.5rem; }
+  .cta-vl { width:1px; height:48px; background:var(--bronze-rule); margin:0 auto 3.5rem; }
+  .cta-info { font-family:'Jost',sans-serif; font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(217,201,168,0.35); line-height:2.8; }
+  .cta-info a { color:var(--bronze-lt); text-decoration:none; }
+
+  /* ── FOOTER ── */
+  footer { background:var(--ink); border-top:0.5px solid rgba(168,132,90,0.18); padding:28px 80px; display:flex; justify-content:space-between; align-items:center; }
+  .ft-logo { font-family:'Playfair Display',serif; font-size:13px; letter-spacing:0.2em; color:var(--bronze); text-transform:uppercase; }
+  .ft-note { font-family:'Jost',sans-serif; font-size:10px; letter-spacing:0.12em; color:rgba(217,201,168,0.28); text-transform:uppercase; }
+
+  /* ── FADE ── */
+  .fu { opacity:0; transform:translateY(18px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .fu.vis { opacity:1; transform:translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width:900px) {
+    nav { padding:0 20px; }
+    .nav-links a { padding:8px 10px; font-size:9px; }
+    #hero { padding:80px 24px 60px; }
+    .container { padding:0 24px; }
+    .sh { grid-template-columns:1fr; gap:20px; }
+    .del-grid { grid-template-columns:1fr; }
+    .del-card { border-right:none; }
+    .del-card:nth-last-child(-n+2) { border-bottom:0.5px solid var(--rule-mid); }
+    .del-card:last-child { border-bottom:none; }
+    .cost-intro, .cost-retainer-row { grid-template-columns:1fr; }
+    .cost-block, .cost-ret { border-right:none; border-bottom:0.5px solid var(--rule-mid); }
+    .cost-block:last-child, .cost-ret:last-child { border-bottom:none; }
+    .tl-row { grid-template-columns:80px 1px 1fr; gap:0 16px; }
+    .pillar-body { padding:0 20px 20px 20px; }
+    .pillar-header { grid-template-columns:40px 1fr auto; gap:12px; padding:18px 20px; }
+    .h-bottom { flex-direction:column; align-items:flex-start; }
+    footer { padding:24px; flex-direction:column; gap:12px; text-align:center; }
+    .outcomes-lead { grid-template-columns:1fr; }
+    .outcomes-lead-block { border-right:none; border-bottom:0.5px solid var(--rule-mid); }
+    .outcomes-lead-block:last-child { border-bottom:none; }
+    .outcome-grid { grid-template-columns:1fr; }
+    .outcome-card { border-right:none; }
+    .outcome-card:nth-last-child(-n+3) { border-bottom:0.5px solid var(--rule-mid); }
+    .outcome-card:last-child { border-bottom:none; }
+    .outcomes-horizon { grid-template-columns:1fr; gap:20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="prog" id="prog"></div>
+
+<nav>
+  <a class="nav-logo" href="#hero">Evoque</a>
+  <ul class="nav-links">
+    <li><a href="#scope"        id="n-scope">Scope</a></li>
+    <li><a href="#deliverables" id="n-deliverables">Deliverables</a></li>
+    <li><a href="#timeline"     id="n-timeline">Timeline</a></li>
+    <li><a href="#costing"      id="n-costing">Costing</a></li>
+    <li><a href="#outcomes"     id="n-outcomes">Outcomes</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-ring h-ring-1"></div>
+  <div class="h-ring h-ring-2"></div>
+  <div class="h-eye">Evoque Consulting &nbsp;·&nbsp; Presented to NUKH &nbsp;·&nbsp; 2026</div>
+  <h1 class="h-title">Brand &amp; Digital<br><em>Launch Proposal</em></h1>
+  <div class="h-rule"></div>
+  <div class="h-bottom">
+    <p class="h-desc">A complete brand, digital, and performance marketing proposal — from identity to market.</p>
+    <div class="h-meta">
+      <div>Brand &amp; Marketing Practice</div>
+      <div>Confidential</div>
+      <div><span>Scroll to explore ↓</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section id="scope">
+  <div class="container">
+    <div class="sh fu">
+      <div><div class="sh-num">01</div><div class="sh-lbl">What We Do</div></div>
+      <h2 class="sh-title">Scope of<br><em>Services</em></h2>
+    </div>
+    <p class="intro fu">Five integrated practice areas — from foundational brand identity to ongoing digital performance — working as one seamless engagement.</p>
+
+    <div class="pillars fu">
+
+      <div class="pillar open" id="p1">
+        <div class="pillar-header" onclick="toggle('p1')">
+          <div class="pillar-num">1</div>
+          <div><div class="pillar-name">Brand &amp; Marketing</div></div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pillar-tag">One time</div>
+            <button class="pillar-toggle">−</button>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <ul class="sub-list">
+            <li><span><strong style="font-weight:500; color:var(--ink);">Brand Strategy</strong><br><span class="sub-note">Positioning, purpose, voice, tone, and competitive differentiation framework.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Brand &amp; Visual Identity</strong><br><span class="sub-note">Logo design, colour palette, typography system, and full visual identity guidelines.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Packaging</strong><br><span class="sub-note">Packaging design and artwork aligned to brand identity and marketplace standards.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Product Shoots</strong><br><span class="sub-note">Professional product photography for website hero sections and marketplace listings.</span></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pillar" id="p2">
+        <div class="pillar-header" onclick="toggle('p2')">
+          <div class="pillar-num">2</div>
+          <div><div class="pillar-name">Website &amp; Digital Storefront</div></div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pillar-tag">One time</div>
+            <button class="pillar-toggle">+</button>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <ul class="sub-list">
+            <li><span><strong style="font-weight:500; color:var(--ink);">Shopify Website Setup</strong><br><span class="sub-note">Full Shopify store build with on-page SEO compatibility, product pages, and conversion-optimised layout.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Myntra &amp; Marketplace Onboarding</strong><br><span class="sub-note">Seller account setup, product listing creation, and catalogue optimisation across Myntra and relevant marketplaces.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Social Media Channel Setup</strong><br><span class="sub-note">Facebook and Instagram business profiles configured with brand assets, bio, and initial content structure.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Meta Performance Marketing Setup</strong><br><span class="sub-note">Business Manager, Pixel, Catalogue, and Ad Account setup configured for launch readiness.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Marketplace Paid Advertising Setup</strong><br><span class="sub-note">Sponsored product and display ad account configuration across active marketplace platforms.</span></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pillar" id="p3">
+        <div class="pillar-header" onclick="toggle('p3')">
+          <div class="pillar-num">3</div>
+          <div><div class="pillar-name">Social Media Organic</div></div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pillar-tag">Retainer</div>
+            <button class="pillar-toggle">+</button>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <ul class="sub-list">
+            <li><span><strong style="font-weight:500; color:var(--ink);">Facebook &amp; Instagram Content</strong><br><span class="sub-note">15 posts and 10 stories per month — designed, written, and scheduled. Includes creative direction, copywriting, and platform-native formatting.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Marketplace Account Management</strong><br><span class="sub-note">Ongoing management of marketplace seller accounts — inventory updates, review monitoring, and listing optimisation.</span></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pillar" id="p4">
+        <div class="pillar-header" onclick="toggle('p4')">
+          <div class="pillar-num">4</div>
+          <div><div class="pillar-name">Performance Marketing</div></div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pillar-tag">Retainer</div>
+            <button class="pillar-toggle">+</button>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <ul class="sub-list">
+            <li><span><strong style="font-weight:500; color:var(--ink);">Meta Ads</strong><br><span class="sub-note">Campaign strategy, creative production, audience targeting, A/B testing, and ongoing optimisation across Facebook and Instagram.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Google Ads</strong><br><span class="sub-note">Search and Shopping campaigns covering branded, category, and competitor keywords with regular bid and conversion optimisation.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Marketplace Ads</strong><br><span class="sub-note">Sponsored product and brand ads managed across Myntra and applicable marketplaces to drive visibility and conversion.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Micro-Influencer Campaigns</strong><br><span class="sub-note">End-to-end influencer identification, briefing, content coordination, and performance reporting for category-relevant creators.</span></span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pillar" id="p5">
+        <div class="pillar-header" onclick="toggle('p5')">
+          <div class="pillar-num">5</div>
+          <div><div class="pillar-name">Website SEO</div></div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="pillar-tag">Retainer</div>
+            <button class="pillar-toggle">+</button>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <ul class="sub-list">
+            <li><span><strong style="font-weight:500; color:var(--ink);">Blog Content</strong><br><span class="sub-note">SEO-optimised blog articles targeting category keywords, product queries, and long-tail search intent to build organic traffic.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">Backlink Building</strong><br><span class="sub-note">Structured outreach to build high-authority backlinks that strengthen domain rating and search ranking.</span></span></li>
+            <li><span><strong style="font-weight:500; color:var(--ink);">AI Search Listings</strong><br><span class="sub-note">Optimisation for AI-driven search surfaces (Google SGE, Perplexity, ChatGPT browsing) to ensure brand visibility in emerging discovery channels.</span></span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section id="deliverables">
+  <div class="container">
+    <div class="sh fu">
+      <div><div class="sh-num">02</div><div class="sh-lbl">What You Receive</div></div>
+      <h2 class="sh-title">Key<br><em>Deliverables</em></h2>
+    </div>
+    <p class="intro fu">Everything Client needs to launch with confidence — owned assets, live platforms, and active campaigns.</p>
+
+    <div class="del-grid fu">
+      <div class="del-card">
+        <div class="del-idx">01</div>
+        <div class="del-name">Brand &amp; Creative Assets</div>
+        <ul class="del-items">
+          <li>Complete brand book with strategy and guidelines</li>
+          <li>Logo suite (primary, secondary, monogram variants)</li>
+          <li>Packaging design and print-ready artwork</li>
+          <li>Professional product photography for web and marketplaces</li>
+        </ul>
+      </div>
+      <div class="del-card">
+        <div class="del-idx">02</div>
+        <div class="del-name">Digital Platforms &amp; Storefronts</div>
+        <ul class="del-items">
+          <li>Live Shopify website with SEO foundations</li>
+          <li>Myntra and marketplace seller accounts with catalogues live</li>
+          <li>Facebook and Instagram business profiles configured</li>
+          <li>Meta Business Manager and Pixel fully set up</li>
+          <li>Marketplace ad accounts configured and ready</li>
+        </ul>
+      </div>
+      <div class="del-card">
+        <div class="del-idx">03</div>
+        <div class="del-name">Monthly Social Content</div>
+        <ul class="del-items">
+          <li>15 designed and copywritten posts per month</li>
+          <li>10 stories per month — native formats for Instagram and Facebook</li>
+          <li>Marketplace account management and listing updates</li>
+        </ul>
+      </div>
+      <div class="del-card">
+        <div class="del-idx">04</div>
+        <div class="del-name">Monthly Performance &amp; SEO</div>
+        <ul class="del-items">
+          <li>Live Meta and Google ad campaigns with monthly reports</li>
+          <li>Marketplace sponsored ad management</li>
+          <li>Micro-influencer campaign coordination</li>
+          <li>Monthly SEO blogs and backlink activity</li>
+          <li>AI search listing optimisation</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="body fu">All project deliverables are handed over in fully editable, source formats. Ongoing deliverables come with monthly reporting so Client retains full visibility.</p>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="container">
+    <div class="sh fu">
+      <div><div class="sh-num">03</div><div class="sh-lbl">Project Schedule</div></div>
+      <h2 class="sh-title">Proposed<br><em>Timeline</em></h2>
+    </div>
+    <p class="intro fu">Two project sprints to build the foundation, then three concurrent monthly retainers to grow and scale.</p>
+
+    <div class="tl-wrap fu">
+
+      <div class="tl-row">
+        <div class="tl-left">
+          <div class="tl-wk">Weeks 1–6</div>
+          <div><span class="tl-type project">Project</span></div>
+        </div>
+        <div class="tl-line"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-ti">Pillar 1 &nbsp;·&nbsp; Brand &amp; Marketing</div>
+          <div class="tl-desc">Brand strategy, visual identity, logo, packaging design, and product photography. Full brand book delivered and signed off before digital build commences.</div>
+          <div class="tl-pills">
+            <div class="tl-pill">Brand Strategy</div>
+            <div class="tl-pill">Visual Identity</div>
+            <div class="tl-pill">Packaging</div>
+            <div class="tl-pill">Product Shoots</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-left">
+          <div class="tl-wk">Weeks 5–8</div>
+          <div><span class="tl-type project">Project</span></div>
+        </div>
+        <div class="tl-line"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-ti">Pillar 2 &nbsp;·&nbsp; Website &amp; Digital Storefront</div>
+          <div class="tl-desc">Shopify website build, marketplace seller setup, social channel creation, and all ad account configuration. Runs concurrently with final brand delivery for a seamless handover into activation.</div>
+          <div class="tl-pills">
+            <div class="tl-pill">Shopify Build</div>
+            <div class="tl-pill">Myntra Setup</div>
+            <div class="tl-pill">Social Profiles</div>
+            <div class="tl-pill">Meta &amp; Marketplace Ads Setup</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-left">
+          <div class="tl-wk">Month 3+</div>
+          <div><span class="tl-type retainer">Retainer</span></div>
+        </div>
+        <div class="tl-line"><div class="tl-dot retainer-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-ti">Pillar 3 &nbsp;·&nbsp; Social Media Organic</div>
+          <div class="tl-desc">Ongoing monthly content creation — 15 posts and 10 stories per month across Facebook and Instagram — plus marketplace account management. Commences from Month 3.</div>
+          <div class="tl-pills">
+            <div class="tl-pill">15 Posts / Month</div>
+            <div class="tl-pill">10 Stories / Month</div>
+            <div class="tl-pill">Marketplace Management</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-left">
+          <div class="tl-wk">Month 3+</div>
+          <div><span class="tl-type retainer">Retainer</span></div>
+        </div>
+        <div class="tl-line"><div class="tl-dot retainer-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-ti">Pillar 4 &nbsp;·&nbsp; Performance Marketing</div>
+          <div class="tl-desc">Live Meta, Google, and marketplace ad campaigns managed and optimised monthly. Includes micro-influencer campaign management and monthly performance reporting.</div>
+          <div class="tl-pills">
+            <div class="tl-pill">Meta Ads</div>
+            <div class="tl-pill">Google Ads</div>
+            <div class="tl-pill">Marketplace Ads</div>
+            <div class="tl-pill">Influencer Campaigns</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-row">
+        <div class="tl-left">
+          <div class="tl-wk">Month 3+</div>
+          <div><span class="tl-type retainer">Retainer</span></div>
+        </div>
+        <div class="tl-line"><div class="tl-dot retainer-dot"></div></div>
+        <div class="tl-content">
+          <div class="tl-ti">Pillar 5 &nbsp;·&nbsp; Website SEO</div>
+          <div class="tl-desc">Monthly blog content, backlink building, and AI search listing optimisation to compound organic reach and domain authority over time.</div>
+          <div class="tl-pills">
+            <div class="tl-pill">Blog Content</div>
+            <div class="tl-pill">Backlinks</div>
+            <div class="tl-pill">AI Search Listings</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- COSTING -->
+<section id="costing">
+  <div class="container">
+    <div class="sh fu">
+      <div><div class="sh-num">04</div><div class="sh-lbl">Investment</div></div>
+      <h2 class="sh-title">Proposed<br><em>Costing</em></h2>
+    </div>
+    <p class="intro fu">Two one-time project fees to build the foundation, and three concurrent monthly retainers to sustain and grow.</p>
+
+    <div class="cost-intro fu">
+      <div class="cost-block">
+        <div class="cost-type">Pillar 1 &nbsp;·&nbsp; One-time Project</div>
+        <div class="cost-name">Brand &amp; Marketing</div>
+        <div class="cost-price">₹500,000<span>One-time</span></div>
+        <ul class="cost-list">
+          <li>Brand strategy &amp; positioning</li>
+          <li>Logo and full visual identity</li>
+          <li>Packaging design &amp; artwork</li>
+          <li>Product photography</li>
+          <li>Brand book</li>
+        </ul>
+      </div>
+      <div class="cost-block">
+        <div class="cost-type">Pillar 2A &nbsp;·&nbsp; One-time Project</div>
+        <div class="cost-name">Website &amp; Digital Storefront</div>
+        <div class="cost-price">₹75,000<span>One-time</span></div>
+        <ul class="cost-list">
+          <li>Shopify Website setup with SEO</li>
+                  <div class="cost-price">₹90,000<span>One-time</span></div>
+        <ul class="cost-list">
+          <li>Wordpress Website setup with SEO</li>
+        </ul>
+      </div>
+       <div class="cost-block">
+        <div class="cost-type">Pillar 2B &nbsp;·&nbsp; One-time Project</div>
+        <div class="cost-name">Website &amp; Digital Storefront</div>
+        <div class="cost-price">₹25,000<span>One-time</span></div>
+        <ul class="cost-list">
+          <li>Myntra &amp; marketplace onboarding</li>
+          <li>Facebook &amp; Instagram setup</li>
+          <li>Meta Business Manager &amp; Pixel</li>
+          <li>Marketplace ad account setup</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cost-retainer-row fu">
+      <div class="cost-ret">
+        <div class="cost-ret-lbl">Pillar 3 &nbsp;·&nbsp; Monthly Retainer</div>
+        <div class="cost-ret-name">Social Media Organic</div>
+        <div class="cost-ret-price">₹50,000</div>
+        <div class="cost-ret-note">Per month</div>
+      </div>
+      <div class="cost-ret">
+        <div class="cost-ret-lbl">Pillar 4 &nbsp;·&nbsp; Monthly Retainer</div>
+        <div class="cost-ret-name">Performance Marketing</div>
+        <div class="cost-ret-price">₹30,000</div>
+        <div class="cost-ret-note">Per month + ad spend</div>
+      </div>
+      <div class="cost-ret">
+        <div class="cost-ret-lbl">Pillar 5 &nbsp;·&nbsp; Monthly Retainer</div>
+        <div class="cost-ret-name">Website SEO</div>
+        <div class="cost-ret-price">₹45,000</div>
+        <div class="cost-ret-note">Per month</div>
+      </div>
+    </div>
+
+    <div class="total-bar fu">
+      <div>
+        <div class="total-lbl">Total Monthly Retainer (Pillars 3, 4 &amp; 5)</div>
+        <div class="total-sub">Excl. ad spend &nbsp;·&nbsp; Excl. GST</div>
+      </div>
+      <div class="total-val">₹125,000 / mo</div>
+    </div>
+
+    <p class="body fu">All fees are exclusive of GST. One-time project fees: 50% on commencement, 50% on delivery. Retainers billed monthly in advance from Month 3. Ad spend budgets are separate and managed transparently at actuals.</p>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section id="outcomes">
+  <div class="container">
+    <div class="sh fu">
+      <div><div class="sh-num">05</div><div class="sh-lbl">What This Creates</div></div>
+      <h2 class="sh-title">Expected<br><em>Outcomes</em></h2>
+    </div>
+    <p class="intro fu">This engagement is structured to compound — each pillar builds on the last. By Month 6, you have a complete brand, active revenue channels, and a growing organic footprint that works without paid spend alone.</p>
+
+    <!-- Two-column lead -->
+    <div class="outcomes-lead fu">
+      <div class="outcomes-lead-block">
+        <div class="ol-phase">Weeks 1–8 &nbsp;·&nbsp; Foundation</div>
+        <h3 class="ol-heading">From concept<br>to <em>market-ready</em></h3>
+        <p class="ol-body">The two project pillars convert a product into a market-ready brand. You leave Phase One with a distinctive identity that commands shelf presence and digital credibility — a brand book, a live website, marketplace listings, and every ad account wired and ready to fire. This is the asset base competitors cannot shortcut.</p>
+      </div>
+      <div class="outcomes-lead-block">
+        <div class="ol-phase">Month 3 onwards &nbsp;·&nbsp; Growth</div>
+        <h3 class="ol-heading">From live<br>to <em>compounding</em></h3>
+        <p class="ol-body">The three retainers activate that foundation month on month. Performance marketing drives immediate, measurable revenue. Organic social builds community and brand recall. SEO stacks authority quietly in the background — so over time, an increasing share of your traffic and orders arrives at zero incremental cost.</p>
+      </div>
+    </div>
+
+    <!-- Six outcome cards -->
+    <div class="outcome-grid fu">
+
+      <div class="outcome-card">
+        <div class="oc-pillar">Pillar 1 &nbsp;·&nbsp; Brand</div>
+        <div class="oc-stat">1</div>
+        <div class="oc-stat-note">Definitive brand identity</div>
+        <div class="oc-name">A Brand That Owns Its Space</div>
+        <div class="oc-desc">Clear positioning and a distinctive visual system mean every customer touchpoint — packaging, Instagram, website — reads as one coherent, premium entity. Brand equity is the most durable competitive moat.</div>
+        <div class="oc-corner"></div>
+      </div>
+
+      <div class="outcome-card">
+        <div class="oc-pillar">Pillar 2 &nbsp;·&nbsp; Digital Storefront</div>
+        <div class="oc-stat">5+</div>
+        <div class="oc-stat-note">Active revenue channels at launch</div>
+        <div class="oc-name">Multi-Channel Revenue From Day One</div>
+        <div class="oc-desc">Shopify, Myntra, and marketplace listings mean your product is discoverable across every relevant platform from launch — not phased in over quarters. D2C and marketplace sales run in parallel from the start.</div>
+        <div class="oc-corner"></div>
+      </div>
+
+      <div class="outcome-card">
+        <div class="oc-pillar">Pillar 3 &nbsp;·&nbsp; Social Organic</div>
+        <div class="oc-stat">300+</div>
+        <div class="oc-stat-note">Brand touchpoints per year</div>
+        <div class="oc-name">Consistent Community & Recall</div>
+        <div class="oc-desc">300+ pieces of on-brand content annually build an audience that compounds. Followers become repeat customers. Organic reach reduces the cost of every paid campaign over time as brand familiarity lifts conversion rates.</div>
+        <div class="oc-corner"></div>
+      </div>
+
+      <div class="outcome-card">
+        <div class="oc-pillar">Pillar 4 &nbsp;·&nbsp; Performance Marketing</div>
+        <div class="oc-stat">ROAS</div>
+        <div class="oc-stat-note">Measurable return on ad spend</div>
+        <div class="oc-name">Predictable, Scalable Revenue</div>
+        <div class="oc-desc">Meta, Google, and marketplace campaigns are structured to generate measurable return from the first month. As pixel data accumulates and audiences build, targeting sharpens — CAC falls while revenue scales.</div>
+        <div class="oc-corner"></div>
+      </div>
+
+      <div class="outcome-card">
+        <div class="oc-pillar">Pillar 4 &nbsp;·&nbsp; Influencer</div>
+        <div class="oc-stat">UGC</div>
+        <div class="oc-stat-note">Earned media & social proof</div>
+        <div class="oc-name">Trust Through Third-Party Voices</div>
+        <div class="oc-desc">Micro-influencer campaigns generate authentic user content, social proof, and category-relevant reach that paid ads alone cannot replicate. This content is repurposed across ads and organic, multiplying its value.</div>
+        <div class="oc-corner"></div>
+      </div>
+
+      <div class="outcome-card">
+        <div class="oc-pillar">Pillar 5 &nbsp;·&nbsp; SEO</div>
+        <div class="oc-stat">↑DR</div>
+        <div class="oc-stat-note">Rising domain authority over time</div>
+        <div class="oc-name">A Growing Organic Revenue Engine</div>
+        <div class="oc-desc">SEO is the only channel where the work you do in Month 3 still pays dividends in Month 36. Blog content, backlinks, and AI search optimisation build an organic moat — traffic and rankings that belong to you, not rented from platforms.</div>
+        <div class="oc-corner"></div>
+      </div>
+
+    </div>
+
+    <!-- Growth horizon -->
+    <div class="outcomes-horizon fu">
+      <div>
+        <div class="oh-label">6</div>
+        <div class="oh-lbl-tag">Month horizon</div>
+      </div>
+      <div class="oh-track">
+
+        <div class="oh-row">
+          <div class="oh-period">Month 1–2</div>
+          <div class="oh-divider"></div>
+          <div class="oh-content">
+            <div class="oh-milestone">Brand &amp; Infrastructure Complete</div>
+            <div class="oh-detail">Identity, packaging, website, marketplace listings, and all ad accounts live. The business has a credible, consistent presence across every channel before a single rupee of ad spend is committed.</div>
+            <div class="oh-tags">
+              <div class="oh-tag royal">Brand ready</div>
+              <div class="oh-tag royal">Website live</div>
+              <div class="oh-tag royal">Marketplaces listed</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="oh-row">
+          <div class="oh-period">Month 3</div>
+          <div class="oh-divider"></div>
+          <div class="oh-content">
+            <div class="oh-milestone">All Three Retainers Activated</div>
+            <div class="oh-detail">Performance campaigns go live. Social content engine starts publishing. SEO groundwork begins. The brand shifts from built to operating — revenue, reach, and authority all accumulating simultaneously.</div>
+            <div class="oh-tags">
+              <div class="oh-tag bronze">Campaigns live</div>
+              <div class="oh-tag bronze">Content publishing</div>
+              <div class="oh-tag bronze">SEO indexing</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="oh-row">
+          <div class="oh-period">Month 4–5</div>
+          <div class="oh-divider"></div>
+          <div class="oh-content">
+            <div class="oh-milestone">Data &amp; Optimisation Loop Established</div>
+            <div class="oh-detail">Pixel data builds audience segments. Best-performing ad creatives are identified and scaled. SEO content begins ranking for long-tail terms. Influencer content is repurposed into paid creatives, lowering production cost per conversion.</div>
+            <div class="oh-tags">
+              <div class="oh-tag">Audiences built</div>
+              <div class="oh-tag">CAC declining</div>
+              <div class="oh-tag">Organic ranking</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="oh-row">
+          <div class="oh-period">Month 6+</div>
+          <div class="oh-divider"></div>
+          <div class="oh-content">
+            <div class="oh-milestone">Compounding Organic &amp; Paid Returns</div>
+            <div class="oh-detail">An increasing share of traffic and orders arrives organically — reducing reliance on paid spend. The brand has a loyal social audience, growing domain authority, and paid channels that convert at improving efficiency. The engine is self-reinforcing.</div>
+            <div class="oh-tags">
+              <div class="oh-tag royal">Organic revenue</div>
+              <div class="oh-tag royal">Reduced CAC</div>
+              <div class="oh-tag royal">Compounding authority</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="body fu">Outcomes are directional and will vary with ad spend levels, category dynamics, and market conditions. Evoque provides monthly reporting across all active retainers so performance is always visible and strategy is adjusted in real time.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-pre">The Next Step</div>
+  <h2 class="cta-title">Ready to Build a Brand<br>That <em>Leads?</em></h2>
+  <div class="cta-vl"></div>
+  <p class="cta-sub">We would welcome a conversation to discuss this proposal and agree on figures.</p>
+  <div class="cta-info">
+    <div>Evoque Consulting &nbsp;·&nbsp; Brand &amp; Marketing Practice</div>
+    <div><a href="mailto:rati@evoqueconsulting.com">rati@evoqueconsulting.com</a></div>
+    <div><a>+91 99871 61008</a></div>
+    <div>Confidential &nbsp;·&nbsp; 2026</div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-logo">Evoque Consulting</div>
+  <div class="ft-note">Confidential &nbsp;·&nbsp; Brand &amp; Marketing Practice &nbsp;·&nbsp; 2026</div>
+</footer>
+
+<script>
+  const prog = document.getElementById('prog');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  });
+
+  const secs = ['scope','deliverables','timeline','costing','outcomes'];
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        const el = document.getElementById('n-' + e.target.id);
+        if (el) el.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  secs.forEach(id => { const el = document.getElementById(id); if (el) io.observe(el); });
+
+  const fo = new IntersectionObserver(es => {
+    es.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('vis'), i * 80);
+        fo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fu').forEach(el => fo.observe(el));
+
+  function toggle(id) {
+    const el = document.getElementById(id);
+    const isOpen = el.classList.contains('open');
+    el.classList.toggle('open', !isOpen);
+    el.querySelector('.pillar-toggle').textContent = isOpen ? '+' : '−';
+  }
+</script>
+</body>
+</html>

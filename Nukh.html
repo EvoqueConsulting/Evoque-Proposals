@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>NUKH — Ladies Shoe Brand</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & ROOT ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+:root {
+  --red:       #C41E1E;
+  --red-deep:  #8B0F0F;
+  --red-dim:   rgba(196,30,30,0.12);
+  --red-glow:  rgba(196,30,30,0.06);
+  --ink:       #111111;
+  --ink-mid:   #2E2E2E;
+  --ink-soft:  #5A5A5A;
+  --ink-muted: #8A8A8A;
+  --white:     #FFFFFF;
+  --off-white: #F9F6F3;
+  --line:      rgba(255,255,255,0.08);
+  --line-dark: rgba(0,0,0,0.1);
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Poppins', system-ui, sans-serif;
+
+  /* Mobile-safe padding */
+  --px: clamp(20px, 5vw, 48px);
+  --section-py: clamp(60px, 10vw, 100px);
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--ink);
+  color: var(--white);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a   { color: inherit; }
+
+/* ─── TYPOGRAPHY HELPERS ─── */
+.display { font-family: var(--font-display); font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.display em { font-style: italic; color: var(--red); font-weight: 400; }
+.label {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--red); display: flex; align-items: center; gap: 10px;
+}
+.label::before { content: ''; display: block; width: 18px; height: 1px; background: var(--red); }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--px);
+  background: rgba(17,17,17,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 700;
+  letter-spacing: 0.14em; color: var(--white);
+  text-decoration: none;
+}
+.nav-brand span { color: var(--red); }
+.hamburger {
+  width: 36px; height: 36px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 5px;
+  cursor: pointer; background: none; border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hamburger span {
+  display: block; width: 22px; height: 1.5px;
+  background: var(--white); border-radius: 2px;
+  transition: all 0.3s ease; transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+
+.mobile-menu {
+  display: none;
+  position: fixed; top: 60px; left: 0; right: 0;
+  background: rgba(17,17,17,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+  z-index: 199; padding: 24px var(--px) 32px;
+  flex-direction: column; gap: 6px;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-size: 16px; font-weight: 400; letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.7); text-decoration: none;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  transition: color 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-menu a:last-child { border-bottom: none; }
+.mobile-menu a:hover, .mobile-menu a:active { color: var(--white); }
+.mobile-menu a::after { content: '→'; color: var(--red); font-size: 14px; }
+
+/* Desktop nav links */
+.desktop-links { display: none; gap: 2px; list-style: none; }
+.desktop-links a {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.07em;
+  text-transform: uppercase; color: rgba(255,255,255,0.5);
+  text-decoration: none; padding: 6px 14px; border-radius: 20px;
+  transition: all 0.2s;
+}
+.desktop-links a:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100svh;
+  padding-top: 60px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.hero-image-wrap {
+  flex: 1; position: relative;
+  min-height: 50vw;
+}
+.hero-image-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 20%;
+  display: block;
+}
+.hero-image-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(17,17,17,0.1) 0%, rgba(17,17,17,0.7) 70%, var(--ink) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 0 var(--px) clamp(40px,8vw,80px);
+  /* overlaps image on desktop */
+}
+.hero-eyebrow { margin-bottom: 18px; }
+.hero-title {
+  font-size: clamp(42px, 10vw, 88px);
+  color: var(--white); margin-bottom: 20px;
+}
+.hero-body {
+  font-size: clamp(14px, 2vw, 16px);
+  color: rgba(255,255,255,0.6);
+  max-width: 520px; margin-bottom: 36px; line-height: 1.8;
+}
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--red); color: var(--white);
+  text-decoration: none; padding: 15px 28px;
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: 40px; transition: all 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+.hero-cta:hover, .hero-cta:active { background: var(--red-deep); transform: translateY(-2px); }
+.hero-cta svg { width: 14px; height: 14px; transition: transform 0.3s; }
+.hero-cta:hover svg { transform: translateX(3px); }
+.hero-stat-strip {
+  display: flex; gap: 1px; margin-top: 48px;
+}
+.hero-stat {
+  flex: 1; background: rgba(255,255,255,0.04);
+  border: 1px solid var(--line); padding: 18px 16px; border-radius: 12px;
+}
+.hero-stat-num {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 4vw, 30px);
+  font-weight: 600; color: var(--red); line-height: 1;
+  margin-bottom: 4px;
+}
+.hero-stat-label {
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  line-height: 1.4; font-weight: 300;
+}
+
+/* ─── SECTIONS ─── */
+section { padding: var(--section-py) var(--px); }
+.section-header { margin-bottom: clamp(40px, 6vw, 60px); }
+.section-header .label { margin-bottom: 16px; }
+.section-header .display { font-size: clamp(30px, 6vw, 52px); margin-bottom: 16px; }
+.section-header p {
+  font-size: clamp(14px, 1.8vw, 15px);
+  color: rgba(255,255,255,0.5); max-width: 560px; line-height: 1.85;
+}
+
+/* ─── MARKET ─── */
+#market { background: var(--ink); }
+.market-image-row {
+  position: relative; margin-bottom: 48px;
+  border-radius: 20px; overflow: hidden;
+  height: clamp(220px, 45vw, 420px);
+}
+.market-image-row img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 30%;
+}
+.market-image-row::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, rgba(17,17,17,0.85) 0%, rgba(17,17,17,0.2) 100%);
+}
+.market-pull-quote {
+  position: absolute; bottom: 20px; left: 20px; right: 20px;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: clamp(14px, 3vw, 18px);
+  font-style: italic; color: rgba(255,255,255,0.85);
+  line-height: 1.45;
+  border-left: 2px solid var(--red); padding-left: 16px;
+}
+.market-cards { display: flex; flex-direction: column; gap: 1px; }
+.mcard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  padding: clamp(20px, 4vw, 32px);
+  border-radius: 0; display: flex; gap: 20px;
+  transition: background 0.25s, transform 0.25s;
+}
+.mcard:first-child { border-radius: 16px 16px 0 0; }
+.mcard:last-child  { border-radius: 0 0 16px 16px; }
+.mcard:hover { background: rgba(196,30,30,0.05); transform: translateX(4px); }
+.mcard-num {
+  font-family: var(--font-display);
+  font-size: 28px; color: rgba(196,30,30,0.35);
+  line-height: 1; min-width: 32px; flex-shrink: 0;
+}
+.mcard-title {
+  font-size: clamp(14px, 2vw, 15px); font-weight: 500;
+  color: var(--white); margin-bottom: 6px;
+}
+.mcard-body { font-size: clamp(13px, 1.7vw, 14px); color: rgba(255,255,255,0.5); line-height: 1.7; }
+
+/* ─── ROLE ─── */
+#role { background: #161616; }
+.role-image-pair {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 48px; height: clamp(200px, 40vw, 360px);
+}
+.role-img {
+  border-radius: 16px; overflow: hidden; position: relative;
+}
+.role-img img { width: 100%; height: 100%; object-fit: cover; }
+.role-img-badge {
+  position: absolute; bottom: 14px; left: 14px;
+  background: rgba(17,17,17,0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  padding: 10px 14px; border-radius: 10px;
+}
+.role-badge-num {
+  font-family: var(--font-display); font-size: 22px;
+  color: var(--red); line-height: 1;
+}
+.role-badge-lbl { font-size: 9px; color: rgba(255,255,255,0.4); margin-top: 3px; letter-spacing: 0.08em; }
+
+.role-aside {
+  background: var(--red); padding: clamp(24px, 5vw, 36px);
+  border-radius: 16px; margin-bottom: 40px;
+  position: relative; overflow: hidden;
+}
+.role-aside::before {
+  content: '"';
+  font-family: var(--font-display); font-size: 200px;
+  color: rgba(0,0,0,0.12); position: absolute;
+  top: -60px; left: 10px; line-height: 1; pointer-events: none;
+}
+.role-aside-text {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 3.5vw, 24px);
+  font-style: italic; color: var(--white);
+  line-height: 1.45; position: relative; z-index: 1; margin-bottom: 12px;
+}
+.role-aside-by {
+  font-size: 11px; color: rgba(255,255,255,0.6);
+  letter-spacing: 0.1em; text-transform: uppercase; position: relative; z-index: 1;
+}
+
+.role-pillars { display: flex; flex-direction: column; gap: 0; }
+.rpillar {
+  display: flex; gap: 18px; align-items: flex-start;
+  padding: clamp(18px, 3vw, 24px) 0;
+  border-bottom: 1px solid var(--line);
+  transition: all 0.25s;
+}
+.rpillar:first-child { border-top: 1px solid var(--line); }
+.rpillar:hover { padding-left: 6px; }
+.rpillar-icon {
+  width: 38px; height: 38px; flex-shrink: 0; border-radius: 10px;
+  background: var(--red-dim); border: 1px solid rgba(196,30,30,0.25);
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+.rpillar-icon svg { width: 16px; height: 16px; stroke: var(--red); fill: none; stroke-width: 1.5; }
+.rpillar-title { font-size: clamp(14px, 2vw, 15px); font-weight: 500; color: var(--white); margin-bottom: 5px; }
+.rpillar-body  { font-size: clamp(12px, 1.7vw, 13px); color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+/* ─── SCOPE ─── */
+#scope { background: var(--ink); }
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.scard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--line);
+  border-radius: 20px; padding: clamp(22px, 4vw, 32px);
+  position: relative; overflow: hidden;
+  transition: all 0.3s; display: flex; flex-direction: column;
+}
+.scard::before {
+  content: ''; position: absolute;
+  bottom: 0; left: 0; right: 0; height: 3px;
+  background: var(--red); transform: scaleX(0);
+  transform-origin: left; transition: transform 0.35s;
+}
+.scard:hover::before, .scard:active::before { transform: scaleX(1); }
+.scard:hover { background: rgba(196,30,30,0.05); transform: translateY(-4px); }
+.scard-num {
+  font-family: var(--font-display); font-style: italic;
+  font-size: 12px; color: var(--red); margin-bottom: 14px; letter-spacing: 0.04em;
+}
+.scard-title {
+  font-family: var(--font-display); font-size: clamp(16px, 2.5vw, 20px);
+  color: var(--white); margin-bottom: 12px; line-height: 1.25;
+}
+.scard-body {
+  font-size: clamp(12px, 1.6vw, 13px); color: rgba(255,255,255,0.45);
+  line-height: 1.7; flex: 1; margin-bottom: 18px;
+}
+.scard-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.stag {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 20px;
+  border: 1px solid rgba(196,30,30,0.3); color: rgba(255,255,255,0.4);
+}
+
+/* ─── TIMELINE ─── */
+#timeline { background: #161616; }
+.tl-wrap { position: relative; padding-left: 32px; }
+.tl-wrap::before {
+  content: ''; position: absolute;
+  left: 6px; top: 8px; bottom: 8px;
+  width: 1px; background: rgba(196,30,30,0.25);
+}
+.tphase {
+  position: relative; margin-bottom: 40px;
+  padding-bottom: 0;
+}
+.tphase:last-child { margin-bottom: 0; }
+.tphase::before {
+  content: ''; position: absolute;
+  left: -28px; top: 5px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--ink-mid); border: 2px solid var(--red);
+  transition: background 0.3s;
+}
+.tphase:hover::before { background: var(--red); }
+.tphase-period {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--red); margin-bottom: 8px;
+}
+.tphase-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 3vw, 22px); color: var(--white); margin-bottom: 8px;
+}
+.tphase-body {
+  font-size: clamp(13px, 1.8vw, 14px); color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 14px;
+}
+.tphase-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.ttag {
+  font-size: 10px; padding: 4px 10px; border-radius: 20px;
+  background: var(--red-dim); border: 1px solid rgba(196,30,30,0.25);
+  color: rgba(255,255,255,0.5);
+}
+
+/* ─── DELIVERABLES ─── */
+#deliverables { background: var(--ink); }
+.del-img-banner {
+  border-radius: 20px; overflow: hidden; margin-bottom: 48px;
+  height: clamp(200px, 40vw, 380px); position: relative;
+}
+.del-img-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+.del-img-banner::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(17,17,17,0.8) 0%, rgba(17,17,17,0.1) 100%);
+}
+.del-img-banner-text {
+  position: absolute; top: 50%; left: clamp(20px, 5%, 36px);
+  transform: translateY(-50%); z-index: 2;
+}
+.del-img-banner-text .display {
+  font-size: clamp(26px, 5vw, 44px); color: var(--white); line-height: 1.1;
+}
+
+.del-items { display: flex; flex-direction: column; gap: 0; }
+.ditem {
+  border-bottom: 1px solid var(--line); padding: clamp(24px, 4vw, 36px) 0;
+}
+.ditem-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.ditem-title {
+  font-family: var(--font-display); font-size: clamp(18px, 3vw, 22px); color: var(--white);
+}
+.ditem-pill {
+  font-size: 9px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 20px; flex-shrink: 0;
+  background: var(--red-dim); color: var(--red); border: 1px solid rgba(196,30,30,0.3);
+}
+.ditem-body {
+  font-size: clamp(13px, 1.7vw, 14px); color: rgba(255,255,255,0.45);
+  line-height: 1.75; margin-bottom: 18px;
+}
+.dtags { display: flex; flex-wrap: wrap; gap: 7px; }
+.dtag {
+  font-size: 11px; padding: 5px 12px; border-radius: 20px;
+  background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4);
+  border: 1px solid var(--line);
+}
+
+/* ─── CONTACT ─── */
+#contact { background: #161616; }
+.contact-img-wrap {
+  border-radius: 20px; overflow: hidden;
+  height: clamp(240px, 50vw, 440px); margin-bottom: 48px; position: relative;
+}
+.contact-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.contact-img-wrap::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(22,22,22,0.9) 100%);
+}
+.contact-heading {
+  font-size: clamp(32px, 7vw, 56px); color: var(--white);
+  margin-bottom: 16px; line-height: 1.15;
+}
+.contact-heading em { font-style: italic; color: var(--red); }
+.contact-sub {
+  font-size: clamp(14px, 1.8vw, 15px); color: rgba(255,255,255,0.45);
+  line-height: 1.8; margin-bottom: 40px; max-width: 520px;
+}
+.contact-rows { display: flex; flex-direction: column; gap: 16px; }
+.contact-row {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  border-radius: 14px; text-decoration: none; color: var(--white);
+  transition: all 0.25s; -webkit-tap-highlight-color: transparent;
+}
+.contact-row:hover, .contact-row:active { background: var(--red-dim); border-color: rgba(196,30,30,0.3); }
+.contact-row-icon {
+  width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+  background: var(--red-dim); border: 1px solid rgba(196,30,30,0.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.contact-row-icon svg { width: 17px; height: 17px; stroke: var(--red); fill: none; stroke-width: 1.5; }
+.contact-row-label { font-size: 10px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+.contact-row-value { font-size: clamp(13px, 2vw, 15px); font-weight: 400; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--ink-mid); padding: 28px var(--px);
+  border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+}
+.footer-brand {
+  font-family: var(--font-display); font-size: 20px;
+  font-weight: 700; letter-spacing: 0.16em; color: var(--white);
+}
+.footer-brand span { color: var(--red); }
+.footer-copy { font-size: 11px; color: rgba(255,255,255,0.2); }
+
+/* ─── REVEAL ANIMATION ─── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.d1 { transition-delay: 0.1s; }
+.d2 { transition-delay: 0.2s; }
+.d3 { transition-delay: 0.3s; }
+.d4 { transition-delay: 0.4s; }
+
+/* ─── DESKTOP OVERRIDES (≥768px) ─── */
+@media (min-width: 768px) {
+  .hamburger     { display: none; }
+  .mobile-menu   { display: none !important; }
+  .desktop-links { display: flex; }
+  nav { height: 68px; }
+
+  .hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 100svh; padding-top: 68px;
+  }
+  .hero-image-wrap {
+    order: 2; min-height: 100%;
+    border-radius: 0;
+  }
+  .hero-image-wrap img { height: 100%; }
+  .hero-image-wrap::after {
+    background: linear-gradient(to right, rgba(17,17,17,0.6) 0%, transparent 60%);
+  }
+  .hero-content {
+    order: 1; display: flex; flex-direction: column;
+    justify-content: center; padding: 80px var(--px);
+    background: var(--ink);
+  }
+  .hero-stat-strip { gap: 12px; }
+
+  .market-image-row { height: clamp(280px, 35vw, 440px); }
+  .market-pull-quote { font-size: clamp(16px, 2vw, 20px); }
+
+  .role-image-pair { height: clamp(240px, 30vw, 400px); }
+
+  .scope-grid { grid-template-columns: repeat(4, 1fr); }
+
+  .tl-wrap {
+    display: grid; grid-template-columns: repeat(5,1fr);
+    gap: 0; padding-left: 0;
+  }
+  .tl-wrap::before {
+    top: 8px; left: 5%; right: 5%; bottom: auto;
+    height: 1px; width: auto;
+  }
+  .tphase { padding-left: 0; }
+  .tphase::before {
+    left: 50%; top: -24px; transform: translateX(-50%);
+  }
+  .tl-wrap::before { left: calc(10% + 6px); right: calc(10% + 6px); }
+  .tphase { padding-top: 28px; text-align: center; }
+  .tphase-tags { justify-content: center; }
+
+  .del-img-banner { height: clamp(280px, 30vw, 420px); }
+
+  #contact {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .contact-img-wrap { margin-bottom: 0; height: auto; aspect-ratio: 3/4; }
+}
+
+@media (min-width: 1100px) {
+  .scope-grid { gap: 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#top" class="nav-brand">NUK<span>H</span></a>
+  <ul class="desktop-links">
+    <li><a href="#market">Market</a></li>
+    <li><a href="#role">Our Role</a></li>
+    <li><a href="#scope">Scope</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#deliverables">Deliverables</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hbtn" aria-label="Menu" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mmenu">
+  <a href="#market"      onclick="closeNav()">Market Reality</a>
+  <a href="#role"        onclick="closeNav()">Our Role</a>
+  <a href="#scope"       onclick="closeNav()">Scope of Work</a>
+  <a href="#timeline"    onclick="closeNav()">Timeline</a>
+  <a href="#deliverables" onclick="closeNav()">Deliverables</a>
+  <a href="#contact"     onclick="closeNav()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-image-wrap">
+    <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=1200&q=85" alt="Ladies sandals editorial" loading="eager">
+  </div>
+  <div class="hero-content">
+    <div class="label hero-eyebrow reveal">Ladies Shoe Brand · 2026</div>
+    <h1 class="display hero-title reveal d1">
+      Footwear built<br>for <em>real life</em>
+    </h1>
+    <p class="hero-body reveal d2">Nukh is entering a trust-driven category where perception wins the first sale and brand loyalty wins every sale after. This is our strategy to make that happen.</p>
+    <a href="#market" class="hero-cta reveal d3">
+      View Proposal
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+    </a>
+    <div class="hero-stat-strip reveal d4">
+      <div class="hero-stat">
+        <div class="hero-stat-num">35–40%</div>
+        <div class="hero-stat-label">Online return rate</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">₹1.5K</div>
+        <div class="hero-stat-label">Contested price zone</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">3</div>
+        <div class="hero-stat-label">Competitor types</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET REALITY -->
+<section id="market">
+  <div class="section-header">
+    <div class="label reveal">01 · Market Reality</div>
+    <h2 class="display section-header reveal d1">The market<br><em>you're entering</em></h2>
+    <p class="reveal d2">A crowded, trust-driven category where first impressions are everything — and hesitation is the enemy of conversion.</p>
+  </div>
+
+  <div class="market-image-row reveal">
+    <img src="https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=1200&q=80" alt="Women's sandals on red background" loading="lazy">
+    <div class="market-pull-quote">"No positioning → No differentiation → No recall → No repeat → Dependence on ads."</div>
+  </div>
+
+  <div class="market-cards">
+    <div class="mcard reveal">
+      <div class="mcard-num">01</div>
+      <div>
+        <div class="mcard-title">High Return Rates</div>
+        <div class="mcard-body">Online footwear sees 35–40% returns. Without try-before-you-buy, the first purchase is driven entirely by perception — not product quality.</div>
+      </div>
+    </div>
+    <div class="mcard reveal d1">
+      <div class="mcard-num">02</div>
+      <div>
+        <div class="mcard-title">The Crowded Middle</div>
+        <div class="mcard-body">₹1,200–₹1,500 is the most contested zone. Without a clear USP, competing here means competing on discounts — a race to the bottom.</div>
+      </div>
+    </div>
+    <div class="mcard reveal d2">
+      <div class="mcard-num">03</div>
+      <div>
+        <div class="mcard-title">Three Player Types</div>
+        <div class="mcard-body">Legacy brands win on trust. Design-led brands win on identity. Marketplace sellers win on price. Without a lane, Nukh falls between all three.</div>
+      </div>
+    </div>
+    <div class="mcard reveal d3">
+      <div class="mcard-num">04</div>
+      <div>
+        <div class="mcard-title">The White Space</div>
+        <div class="mcard-body">Comfortable, good-looking footwear that works across the entire day — not just occasions. That gap is real. Nobody owns it yet.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVOQUE ROLE -->
+<section id="role">
+  <div class="section-header">
+    <div class="label reveal">02 · Evoque's Role</div>
+    <h2 class="display section-header reveal d1">Not just execution.<br><em>Brand architecture.</em></h2>
+    <p class="reveal d2">We build the foundation that makes everything else easier — from your first conversion to your tenth repeat customer.</p>
+  </div>
+
+  <div class="role-image-pair reveal">
+    <div class="role-img">
+      <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&q=80" alt="Sandals lifestyle" loading="lazy">
+      <div class="role-img-badge">
+        <div class="role-badge-num">5</div>
+        <div class="role-badge-lbl">Pillars</div>
+      </div>
+    </div>
+    <div class="role-img">
+      <img src="https://images.unsplash.com/photo-1562183241-b937e95585b6?w=800&q=80" alt="Shoe editorial" loading="lazy">
+    </div>
+  </div>
+
+  <div class="role-aside reveal">
+    <div class="role-aside-text">"If we get the positioning right, everything else becomes easier — from conversion to retention."</div>
+    <div class="role-aside-by">Evoque Consulting · 2026</div>
+  </div>
+
+  <div class="role-pillars">
+    <div class="rpillar reveal">
+      <div class="rpillar-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <div>
+        <div class="rpillar-title">Clear Positioning</div>
+        <div class="rpillar-body">Define Nukh's reason to win. Effortless everyday footwear that fits real life — a lane that is genuinely uncrowded.</div>
+      </div>
+    </div>
+    <div class="rpillar reveal d1">
+      <div class="rpillar-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <div>
+        <div class="rpillar-title">Strong Identity</div>
+        <div class="rpillar-body">Brand book, visual language, and packaging that communicates confidence — clean, not loud. Confident, not flashy.</div>
+      </div>
+    </div>
+    <div class="rpillar reveal d2">
+      <div class="rpillar-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div>
+        <div class="rpillar-title">Content That Shows, Not Tells</div>
+        <div class="rpillar-body">Real-life usage photography and social content that builds trust no ad budget can buy.</div>
+      </div>
+    </div>
+    <div class="rpillar reveal d3">
+      <div class="rpillar-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h11v4H3z"/></svg>
+      </div>
+      <div>
+        <div class="rpillar-title">Marketplace Presence That Stands Out</div>
+        <div class="rpillar-body">Myntra listings optimised for trust — lifestyle shots, fit cues, comfort signals that reduce hesitation immediately.</div>
+      </div>
+    </div>
+    <div class="rpillar reveal d4">
+      <div class="rpillar-icon">
+        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
+      <div>
+        <div class="rpillar-title">Performance That Scales</div>
+        <div class="rpillar-body">A paid strategy built to compound with a strong brand — not compensate for a weak one.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCOPE -->
+<section id="scope">
+  <div class="section-header">
+    <div class="label reveal">03 · Scope of Work</div>
+    <h2 class="display section-header reveal d1">Four pillars,<br><em>one direction</em></h2>
+    <p class="reveal d2">Each workstream compounds on the others. Positioning informs content. Content fuels performance. Performance funds growth.</p>
+  </div>
+
+  <div class="scope-grid">
+    <div class="scard reveal">
+      <div class="scard-num">01 —</div>
+      <div class="scard-title">Brand Discovery & Positioning</div>
+      <div class="scard-body">Define the brand's place and reason to win. Competitive audit, brand personality, visual territory, communication tone.</div>
+      <div class="scard-tags">
+        <span class="stag">Brand Book</span>
+        <span class="stag">Logo</span>
+        <span class="stag">Identity</span>
+        <span class="stag">Packaging</span>
+      </div>
+    </div>
+    <div class="scard reveal d1">
+      <div class="scard-num">02 —</div>
+      <div class="scard-title">Website & Digital Storefront</div>
+      <div class="scard-body">Conversion-focused, mobile-first, SEO-driven. Marketplace integrations and monthly organic content.</div>
+      <div class="scard-tags">
+        <span class="stag">D2C Website</span>
+        <span class="stag">Myntra</span>
+        <span class="stag">SEO</span>
+        <span class="stag">Blogs</span>
+      </div>
+    </div>
+    <div class="scard reveal d2">
+      <div class="scard-num">03 —</div>
+      <div class="scard-title">Social Media Organic</div>
+      <div class="scard-body">Build trust and familiarity that drives consistent inbound demand across Instagram and Facebook.</div>
+      <div class="scard-tags">
+        <span class="stag">Instagram</span>
+        <span class="stag">Facebook</span>
+        <span class="stag">15 Posts/m</span>
+        <span class="stag">10 Stories</span>
+      </div>
+    </div>
+    <div class="scard reveal d3">
+      <div class="scard-num">04 —</div>
+      <div class="scard-title">Performance Marketing</div>
+      <div class="scard-body">Capture and convert demand efficiently. A paid strategy that scales with brand strength, not against it.</div>
+      <div class="scard-tags">
+        <span class="stag">Meta Ads</span>
+        <span class="stag">Google Ads</span>
+        <span class="stag">Influencers</span>
+        <span class="stag">WhatsApp</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="section-header">
+    <div class="label reveal">04 · Timeline</div>
+    <h2 class="display section-header reveal d1">How we get <em>there</em></h2>
+    <p class="reveal d2">A phased rollout that builds the foundation before turning on performance spend — so every rupee works harder.</p>
+  </div>
+
+  <div class="tl-wrap">
+    <div class="tphase reveal">
+      <div class="tphase-period">Weeks 1–3</div>
+      <div class="tphase-title">Discovery & Brand Foundation</div>
+      <div class="tphase-body">Market audit, brand book, logo, visual identity, photography direction. The base everything is built on.</div>
+      <div class="tphase-tags"><span class="ttag">Brand Book</span><span class="ttag">Logo</span><span class="ttag">Identity</span></div>
+    </div>
+    <div class="tphase reveal d1">
+      <div class="tphase-period">Weeks 3–6</div>
+      <div class="tphase-title">Digital Infrastructure</div>
+      <div class="tphase-body">Website build, payment setup, Myntra integration, social profile setup, and initial content calendar.</div>
+      <div class="tphase-tags"><span class="ttag">Website</span><span class="ttag">Marketplace</span><span class="ttag">Social Setup</span></div>
+    </div>
+    <div class="tphase reveal d2">
+      <div class="tphase-period">Month 2</div>
+      <div class="tphase-title">Content & Organic Launch</div>
+      <div class="tphase-body">12 posts, 4 stories, first blogs, backlinks. Brand presence established before paid spend begins.</div>
+      <div class="tphase-tags"><span class="ttag">12 Posts</span><span class="ttag">SEO</span><span class="ttag">Blogs</span></div>
+    </div>
+    <div class="tphase reveal d3">
+      <div class="tphase-period">Month 3</div>
+      <div class="tphase-title">Performance Goes Live</div>
+      <div class="tphase-body">Meta & Google Ads activated. Influencer seeding begins. WhatsApp automation deployed. Tracking in place.</div>
+      <div class="tphase-tags"><span class="ttag">Meta Ads</span><span class="ttag">Google Ads</span><span class="ttag">Influencers</span></div>
+    </div>
+    <div class="tphase reveal d4">
+      <div class="tphase-period">Month 4+</div>
+      <div class="tphase-title">Optimise & Scale</div>
+      <div class="tphase-body">Data-led campaign optimisation, SEO compounding, retargeting, and revenue scaling. Monthly reports.</div>
+      <div class="tphase-tags"><span class="ttag">Retargeting</span><span class="ttag">Reporting</span><span class="ttag">Scale</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section id="deliverables">
+  <div class="del-img-banner reveal">
+    <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=1400&q=80" alt="Sandal detail close-up" loading="lazy">
+    <div class="del-img-banner-text">
+      <div class="display">What you'll<br><em>receive</em></div>
+    </div>
+  </div>
+
+  <div class="del-items">
+    <div class="ditem reveal">
+      <div class="ditem-header">
+        <div class="ditem-title">Brand Discovery & Positioning</div>
+        <div class="ditem-pill">One-time</div>
+      </div>
+      <div class="ditem-body">A complete brand system — from the positioning statement and competitive differentiation through to the visual language, logo, and packaging. Every future decision references this document.</div>
+      <div class="dtags">
+        <span class="dtag">Brand Book</span>
+        <span class="dtag">Logo & Identity</span>
+        <span class="dtag">Packaging Design</span>
+        <span class="dtag">Photography Brief</span>
+      </div>
+    </div>
+    <div class="ditem reveal d1">
+      <div class="ditem-header">
+        <div class="ditem-title">Website & Performance</div>
+        <div class="ditem-pill">Ongoing</div>
+      </div>
+      <div class="ditem-body">A conversion-ready D2C storefront with marketplace integrations, monthly SEO content, and steady organic traffic growth. Built for trust, designed for repeat visits.</div>
+      <div class="dtags">
+        <span class="dtag">Desktop + Mobile Site</span>
+        <span class="dtag">Payment Gateway</span>
+        <span class="dtag">Marketplace Integration</span>
+        <span class="dtag">4 Blogs / Month</span>
+        <span class="dtag">100 Backlinks / Month</span>
+      </div>
+    </div>
+    <div class="ditem reveal d2">
+      <div class="ditem-header">
+        <div class="ditem-title">Social Media Organic</div>
+        <div class="ditem-pill">Monthly</div>
+      </div>
+      <div class="ditem-body">A consistent, on-brand social presence that warms the audience before they buy. 35% product showcase, 25% lifestyle, 20% UGC, 10% brand story, 10% offers.</div>
+      <div class="dtags">
+        <span class="dtag">Profile Setup (IG + FB)</span>
+        <span class="dtag">Bio & Highlights</span>
+        <span class="dtag">12 Posts / Month</span>
+        <span class="dtag">4 Stories / Month</span>
+      </div>
+    </div>
+    <div class="ditem reveal d3">
+      <div class="ditem-header">
+        <div class="ditem-title">Performance Marketing</div>
+        <div class="ditem-pill">Monthly</div>
+      </div>
+      <div class="ditem-body">Trackable revenue growth through paid channels that compound over time — built on brand strength, not despite a weak brand.</div>
+      <div class="dtags">
+        <span class="dtag">Meta Ads Setup</span>
+        <span class="dtag">Google Ads</span>
+        <span class="dtag">Influencer Seeding</span>
+        <span class="dtag">WhatsApp Marketing</span>
+        <span class="dtag">Monthly Reports</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-img-wrap reveal">
+    <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=1200&q=80" alt="Ladies sandals collection" loading="lazy">
+  </div>
+  <div>
+    <h2 class="contact-heading reveal">Let's build<br><em>something real.</em></h2>
+    <p class="contact-sub reveal d1">We translate a founder's vision into a defined identity, a considered strategy, and marketing execution that delivers sustained progress.</p>
+    <div class="contact-rows">
+      <a href="tel:+919987161008" class="contact-row reveal d2">
+        <div class="contact-row-icon">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.13 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+        </div>
+        <div>
+          <div class="contact-row-label">Call us</div>
+          <div class="contact-row-value">+91 99871 61008</div>
+        </div>
+      </a>
+      <a href="mailto:rati@evoqueconsulting.com" class="contact-row reveal d3">
+        <div class="contact-row-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="contact-row-label">Email us</div>
+          <div class="contact-row-value">rati@evoqueconsulting.com</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">NUK<span>H</span></div>
+  <div class="footer-copy">Prepared by Evoque Consulting · 2026</div>
+</footer>
+
+<script>
+  /* Reveal on scroll */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Mobile nav */
+  function toggleNav() {
+    const btn  = document.getElementById('hbtn');
+    const menu = document.getElementById('mmenu');
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+  }
+  function closeNav() {
+    document.getElementById('hbtn').classList.remove('open');
+    document.getElementById('mmenu').classList.remove('open');
+  }
+
+  /* Active nav highlight */
+  const sections = document.querySelectorAll('section[id]');
+  const links    = document.querySelectorAll('.desktop-links a');
+  const navObs   = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.style.color = '');
+        const active = document.querySelector('.desktop-links a[href="#' + e.target.id + '"]');
+        if (active) active.style.color = '#fff';
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => navObs.observe(s));
+</script>
+</body>
+</html>

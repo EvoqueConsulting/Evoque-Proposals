@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DarkNext × Evoque — Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+:root {
+  --cobalt: #1a3a8c; --cobalt-pale: #e8edf8; --cobalt-mid: #2a50b8;
+  --burgundy: #8c1f1f; --burgundy-pale: #f5e8e8;
+  --amber: #b8780a; --amber-pale: #fdf3e1; --amber-mid: #d4952a;
+  --malachite: #1a5c3c; --malachite-pale: #e4f0ea;
+  --lavender: #b8aed4;
+  --stone: #f4f2ee; --warm-white: #fdfcfa;
+  --ink: #18160f; --text-dark: #1a1814; --text-mid: #4a4640; --text-muted: #7a7672;
+  --border: #e2ddd7; --border-mid: #ccc8c2;
+}
+body { font-family: 'Jost', sans-serif; font-weight: 300; color: var(--text-dark); background: var(--warm-white); line-height: 1.6; font-size: 16px; overflow-x: hidden; }
+
+/* ── PROGRESS ── */
+.pbar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--cobalt), var(--amber-mid)); z-index: 400; width: 0; transition: width 0.1s linear; }
+
+/* ── NAV ── */
+nav { position: fixed; top: 3px; left: 0; right: 0; z-index: 300; background: rgba(253,252,250,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+.nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 600; color: var(--text-dark); letter-spacing: 0.03em; white-space: nowrap; }
+.nav-links { display: flex; gap: 0; list-style: none; }
+.nav-links a { font-size: 10px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; padding: 8px 12px; transition: color 0.2s; white-space: nowrap; }
+.nav-links a:hover, .nav-links a.active { color: var(--cobalt); }
+/* Hamburger */
+.nav-toggle { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 20px; height: 1.5px; background: var(--text-dark); transition: all 0.3s; }
+.mobile-menu { display: none; position: fixed; top: 63px; left: 0; right: 0; background: rgba(253,252,250,0.98); border-bottom: 1px solid var(--border); z-index: 299; padding: 12px 0; flex-direction: column; }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mid); text-decoration: none; padding: 14px 24px; border-bottom: 1px solid var(--border); }
+.mobile-menu a:last-child { border-bottom: none; }
+
+/* ── LAYOUT ── */
+section { padding: 88px 0; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+.divider { width: 100%; height: 1px; background: var(--border); }
+.stripe { display: flex; height: 3px; overflow: hidden; border-radius: 2px; }
+.stripe span { flex: 1; }
+
+/* ── TYPE ── */
+.eyebrow { font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; }
+h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(30px, 4.5vw, 52px); font-weight: 300; line-height: 1.06; color: var(--text-dark); letter-spacing: -0.01em; margin-bottom: 16px; }
+h2 em { font-style: italic; color: var(--cobalt); }
+h2 strong { font-weight: 600; }
+h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; line-height: 1.2; }
+.lead { font-size: 16px; font-weight: 300; color: var(--text-mid); line-height: 1.8; }
+.small { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.vis { opacity: 1; transform: none; }
+.d1 { transition-delay: 0.08s; } .d2 { transition-delay: 0.16s; } .d3 { transition-delay: 0.24s; } .d4 { transition-delay: 0.32s; }
+
+/* ═══════════════════════════════
+   COVER
+═══════════════════════════════ */
+#cover {
+  min-height: 100vh; padding: 0;
+  position: relative; display: flex; align-items: center; overflow: hidden;
+  background: #e0ddd7;
+}
+.cover-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=85&auto=format&fit=crop');
+  background-size: cover; background-position: center 35%;
+  filter: brightness(0.55) saturate(0.7);
+}
+.cover-inner { position: relative; z-index: 2; max-width: 1080px; margin: 0 auto; padding: 100px 40px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: end; }
+.cover-badge { display: inline-flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber-mid); margin-bottom: 18px; }
+.cover-badge::before { content: ''; width: 20px; height: 1px; background: var(--amber-mid); }
+.cover-h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(52px, 7vw, 96px); font-weight: 300; line-height: 0.96; color: #fff; margin-bottom: 20px; }
+.cover-h1 em { font-style: italic; color: var(--amber-mid); }
+.cover-sub { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.75; max-width: 380px; margin-bottom: 32px; font-weight: 300; }
+.cover-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--amber-mid); color: #fff; padding: 14px 28px; border-radius: 2px; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; transition: background 0.2s; }
+.cover-cta:hover { background: var(--amber); }
+.cover-right { display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; }
+.cover-stat { padding: 20px 24px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-left: 3px solid; }
+.cover-stat:nth-child(1) { border-color: var(--cobalt-mid); }
+.cover-stat:nth-child(2) { border-color: var(--amber-mid); }
+.cover-stat:nth-child(3) { border-color: var(--malachite); }
+.cover-stat-l { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+.cover-stat-v { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #fff; }
+
+/* ═══════════════════════════════
+   CONTEXT  
+═══════════════════════════════ */
+#context { background: var(--stone); padding-bottom: 0; }
+
+/* Big bold statement bar */
+.context-statement-bar {
+  background: var(--cobalt);
+  padding: 52px 40px;
+  position: relative; overflow: hidden;
+}
+.context-statement-bar::before {
+  content: '';
+  position: absolute; right: -60px; top: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  border: 60px solid rgba(255,255,255,0.04);
+}
+.context-statement-bar p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 3vw, 36px);
+  font-weight: 300; font-style: italic;
+  color: #fff; line-height: 1.4;
+  max-width: 720px; position: relative; z-index: 1;
+}
+.context-statement-bar p em { color: var(--amber-mid); font-style: normal; font-weight: 600; }
+
+/* 3 problem cards */
+.context-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+.ctx-card { background: #fff; padding: 32px 26px; border-top: 3px solid; }
+.ctx-card:nth-child(1) { border-color: var(--burgundy); }
+.ctx-card:nth-child(2) { border-color: var(--amber-mid); }
+.ctx-card:nth-child(3) { border-color: var(--burgundy); }
+.ctx-card-icon { font-size: 22px; margin-bottom: 14px; }
+.ctx-card h3 { font-size: 17px; margin-bottom: 8px; }
+.ctx-card p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+
+/* WHERE YOU ARE */
+.where-strip { background: #fff; padding: 52px 40px; }
+.where-inner { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 52px; align-items: start; }
+.where-left h2 { margin-bottom: 12px; }
+.where-left p { font-size: 14px; color: var(--text-mid); line-height: 1.75; }
+.where-caps { display: flex; flex-direction: column; gap: 2px; }
+.cap-row { display: flex; gap: 16px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid var(--border); }
+.cap-row:last-child { border-bottom: none; }
+.cap-n { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; color: var(--border-mid); line-height: 1; min-width: 40px; }
+.cap-row h4 { font-size: 15px; font-weight: 500; color: var(--text-dark); margin-bottom: 3px; }
+.cap-row p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+/* ═══════════════════════════════
+   PERCEPTION GAP — HERO TREATMENT
+═══════════════════════════════ */
+#perception {
+  background: var(--ink);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.perception-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=1600&q=75&auto=format&fit=crop');
+  background-size: cover; background-position: center;
+  opacity: 0.18;
+}
+.perception-inner { position: relative; z-index: 2; max-width: 1080px; margin: 0 auto; padding: 80px 40px; }
+.perception-label { font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+.perception-headline { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 66px); font-weight: 300; color: #fff; line-height: 1.0; margin-bottom: 48px; }
+.perception-headline em { font-style: italic; color: var(--amber-mid); }
+
+/* The gap grid */
+.gap-grid { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 0; align-items: stretch; }
+.gap-col-left { display: flex; flex-direction: column; gap: 2px; }
+.gap-col-right { display: flex; flex-direction: column; gap: 2px; }
+.gap-arrows { display: flex; flex-direction: column; gap: 2px; justify-content: stretch; }
+.gap-item-left { padding: 20px 22px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); flex: 1; display: flex; align-items: center; }
+.gap-item-left p { font-size: 14px; color: rgba(255,255,255,0.55); text-decoration: line-through; text-decoration-color: rgba(255,255,255,0.25); line-height: 1.4; }
+.gap-item-right { padding: 20px 22px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); flex: 1; display: flex; align-items: center; }
+.gap-item-right p { font-size: 15px; color: #fff; font-weight: 400; line-height: 1.4; }
+.gap-item-right.highlight { background: rgba(212,149,42,0.18); border-color: rgba(212,149,42,0.5); }
+.gap-item-right.highlight p { color: var(--amber-mid); }
+.gap-arr-cell { flex: 1; display: flex; align-items: center; justify-content: center; color: var(--amber-mid); font-size: 20px; min-height: 62px; }
+
+.gap-col-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); margin-bottom: 10px; }
+.gap-col-label.right-label { }
+
+.perception-note { margin-top: 36px; padding: 24px 28px; background: rgba(255,255,255,0.06); border-left: 3px solid var(--amber-mid); }
+.perception-note p { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.5; }
+
+/* ═══════════════════════════════
+   EVOQUE ROLE
+═══════════════════════════════ */
+#evoque { background: #fff; }
+.evoque-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.evoque-img { border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; }
+.evoque-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.evoque-list { list-style: none; margin-top: 22px; }
+.evoque-list li { padding: 13px 0; border-bottom: 1px solid var(--border); display: flex; gap: 14px; font-size: 15px; color: var(--text-mid); font-weight: 300; line-height: 1.5; }
+.evoque-list li::before { content: '→'; color: var(--cobalt); flex-shrink: 0; }
+.not-advisory { margin-top: 22px; padding: 20px 24px; background: var(--cobalt-pale); border-left: 3px solid var(--cobalt); border-radius: 0 3px 3px 0; }
+.not-advisory p { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: var(--cobalt); line-height: 1.35; }
+.not-advisory strong { font-style: normal; }
+
+/* ═══════════════════════════════
+   BUILD + SCOPE + TIMELINE  (stitched)
+═══════════════════════════════ */
+#roadmap { background: var(--stone); }
+.roadmap-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-bottom: 52px; }
+.roadmap-intro p { font-size: 15px; color: var(--text-mid); line-height: 1.8; }
+
+/* System blocks */
+.system-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2px; margin-bottom: 2px; }
+.sys-block { background: #fff; padding: 24px 18px; border-top: 3px solid var(--border); transition: border-color 0.3s, transform 0.25s; cursor: default; }
+.sys-block:hover { transform: translateY(-3px); }
+.sys-block:nth-child(1):hover { border-color: var(--cobalt); }
+.sys-block:nth-child(2):hover { border-color: var(--burgundy); }
+.sys-block:nth-child(3):hover { border-color: var(--amber-mid); }
+.sys-block:nth-child(4):hover { border-color: var(--malachite); }
+.sys-block:nth-child(5):hover { border-color: var(--lavender); }
+.sys-block:nth-child(6):hover { border-color: var(--cobalt); }
+.sys-n { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; font-family: 'Cormorant Garamond', serif; }
+.sys-block h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; margin-bottom: 0; }
+
+/* Scope layers */
+.scope-layers { display: flex; flex-direction: column; gap: 2px; margin-bottom: 2px; }
+.scope-row { display: grid; grid-template-columns: 220px 1fr 1fr; background: #fff; overflow: hidden; transition: box-shadow 0.25s; }
+.scope-row:hover { box-shadow: 2px 0 0 var(--cobalt) inset; }
+.scope-lbl { padding: 22px 22px; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); }
+.scope-row:nth-child(1) .scope-lbl { background: var(--cobalt-pale); }
+.scope-row:nth-child(2) .scope-lbl { background: var(--burgundy-pale); }
+.scope-row:nth-child(3) .scope-lbl { background: var(--amber-pale); }
+.scope-row:nth-child(4) .scope-lbl { background: var(--malachite-pale); }
+.scope-n { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 4px; }
+.scope-lbl h4 { font-size: 14px; font-weight: 500; color: var(--text-dark); line-height: 1.3; }
+.scope-desc { padding: 22px 24px; font-size: 13px; color: var(--text-mid); line-height: 1.7; border-right: 1px solid var(--border); display: flex; align-items: center; }
+.scope-budget-cell { padding: 22px 24px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+.scope-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; font-weight: 500; width: fit-content; }
+.tag-ot { background: var(--cobalt-pale); color: var(--cobalt); }
+.tag-rt { background: var(--malachite-pale); color: var(--malachite); }
+.scope-budget-cell .small { font-size: 12px; color: var(--text-muted); }
+
+/* Budget split note */
+.budget-note-bar { background: var(--amber-pale); border-left: 3px solid var(--amber-mid); padding: 16px 22px; margin-bottom: 52px; font-size: 13px; color: var(--amber); font-style: italic; border-radius: 0 2px 2px 0; }
+
+/* Timeline */
+.timeline-header { margin-bottom: 28px; }
+.tl-track { display: grid; grid-template-columns: repeat(4,1fr); position: relative; margin-bottom: 24px; }
+.tl-spine { position: absolute; top: 22px; left: 28px; right: 28px; height: 1px; background: var(--border); z-index: 0; }
+.tl-node { padding: 0 12px; position: relative; z-index: 1; }
+.tl-dot-wrap { margin-bottom: 18px; }
+.tl-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid; background: #fff; display: block; }
+.tl-node:nth-child(1) .tl-dot { border-color: var(--cobalt); }
+.tl-node:nth-child(2) .tl-dot { border-color: var(--amber-mid); }
+.tl-node:nth-child(3) .tl-dot { border-color: var(--malachite); }
+.tl-node:nth-child(4) .tl-dot { border-color: var(--burgundy); }
+.tl-period { font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-muted); margin-bottom: 6px; }
+.tl-phase { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; color: var(--text-dark); margin-bottom: 10px; }
+.tl-items { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.tl-items li { font-size: 12px; color: var(--text-muted); display: flex; gap: 7px; line-height: 1.45; }
+.tl-items li::before { content: '·'; color: var(--border-mid); }
+.tl-legend { display: flex; flex-wrap: wrap; gap: 16px; padding: 14px 18px; background: #fff; border-radius: 2px; }
+.tl-leg { display: flex; align-items: center; gap: 7px; font-size: 11px; color: var(--text-mid); }
+.tl-leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ═══════════════════════════════
+   EXECUTION
+═══════════════════════════════ */
+#execution { background: #fff; }
+.exec-tabs { display: flex; border-bottom: 1px solid var(--border); overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.exec-tabs::-webkit-scrollbar { display: none; }
+.etab { padding: 13px 16px; font-size: 11px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: color 0.2s, border-color 0.2s; margin-bottom: -1px; }
+.etab:hover { color: var(--text-dark); }
+.etab.on { color: var(--cobalt); border-bottom-color: var(--cobalt); }
+.epanel { display: none; background: var(--stone); }
+.epanel.on { display: grid; grid-template-columns: 1fr 1fr; }
+.etext { padding: 44px 40px; background: #fff; }
+.etext .eyebrow { margin-bottom: 12px; color: var(--text-muted); }
+.etext h3 { font-size: 24px; margin-bottom: 12px; line-height: 1.25; }
+.etext p { font-size: 15px; color: var(--text-mid); line-height: 1.78; }
+.etags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+.etag { padding: 5px 11px; border: 1px solid var(--border-mid); border-radius: 100px; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.eimg { overflow: hidden; min-height: 300px; }
+.eimg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ═══════════════════════════════
+   OUTCOMES
+═══════════════════════════════ */
+#outcomes { background: var(--cobalt); position: relative; overflow: hidden; }
+.outcomes-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=70&auto=format&fit=crop'); background-size: cover; background-position: center 40%; opacity: 0.1; }
+.outcomes-inner { position: relative; z-index: 1; }
+.outcomes-inner .eyebrow { color: rgba(255,255,255,0.4); }
+.outcomes-inner h2 { color: #fff; margin-bottom: 32px; }
+.outcomes-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; }
+.outcome-card { padding: 28px 22px; background: rgba(255,255,255,0.07); border-top: 3px solid; transition: background 0.25s; }
+.outcome-card:hover { background: rgba(255,255,255,0.12); }
+.outcome-card:nth-child(1) { border-color: rgba(255,255,255,0.4); }
+.outcome-card:nth-child(2) { border-color: var(--amber-mid); }
+.outcome-card:nth-child(3) { border-color: rgba(255,255,255,0.4); }
+.outcome-card:nth-child(4) { border-color: var(--amber-mid); }
+.outcome-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 8px; line-height: 1.2; }
+.outcome-card p { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.65; }
+
+/* ═══════════════════════════════
+   COMMERCIAL
+═══════════════════════════════ */
+#commercial { background: #fff; }
+.commercial-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+.model-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.mcard { padding: 20px 22px; border-left: 3px solid; background: var(--stone); border-radius: 0 3px 3px 0; }
+.mcard:nth-child(1) { border-color: var(--cobalt); }
+.mcard:nth-child(2) { border-color: var(--amber-mid); }
+.mcard:nth-child(3) { border-color: var(--malachite); }
+.mpill { display: inline-block; padding: 2px 9px; border: 1px solid var(--border-mid); border-radius: 100px; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+.mcard h4 { font-size: 15px; font-weight: 500; color: var(--text-dark); margin-bottom: 3px; }
+.mcard p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.comm-img { border-radius: 4px; overflow: hidden; position: sticky; top: 72px; }
+.comm-img img { width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover; }
+
+/* ═══════════════════════════════
+   CLOSING
+═══════════════════════════════ */
+#closing { padding: 120px 0; background: var(--stone); position: relative; overflow: hidden; }
+.closing-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1600&q=75&auto=format&fit=crop'); background-size: cover; background-position: center 30%; opacity: 0.06; }
+.closing-content { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.closing-content .eyebrow { justify-content: center; }
+.closing-content h2 { font-size: clamp(34px, 5vw, 58px); }
+.closing-lines { display: flex; flex-direction: column; gap: 4px; align-items: center; margin: 4px 0; }
+.cl { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: var(--text-mid); }
+.closing-content p { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 420px; text-align: center; }
+.btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.btn-p { display: inline-flex; align-items: center; gap: 8px; background: var(--cobalt); color: #fff; padding: 14px 28px; border-radius: 2px; text-decoration: none; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; transition: background 0.2s; }
+.btn-p:hover { background: #102070; }
+.btn-o { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border-mid); color: var(--text-mid); padding: 14px 28px; border-radius: 2px; text-decoration: none; font-size: 11px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; transition: border-color 0.2s, color 0.2s; }
+.btn-o:hover { border-color: var(--text-dark); color: var(--text-dark); }
+.sig { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+footer { background: var(--ink); color: rgba(255,255,255,0.3); padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; letter-spacing: 0.06em; flex-wrap: wrap; gap: 8px; }
+
+/* ═══════════════════════════════
+   MOBILE  ≤ 768px
+═══════════════════════════════ */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .container { padding: 0 20px; }
+  section { padding: 60px 0; }
+
+  /* Cover */
+  .cover-inner { grid-template-columns: 1fr; padding: 100px 20px 60px; gap: 0; }
+  .cover-right { display: none; }
+  .cover-h1 { font-size: 52px; }
+
+  /* Context */
+  .context-statement-bar { padding: 36px 20px; }
+  .context-cards { grid-template-columns: 1fr; }
+  .where-inner { grid-template-columns: 1fr; gap: 32px; padding: 40px 20px; }
+
+  /* Perception */
+  .perception-inner { padding: 60px 20px; }
+  .gap-grid { grid-template-columns: 1fr; }
+  .gap-arrows { display: none; }
+  .gap-col-left, .gap-col-right { gap: 2px; }
+  .gap-item-left, .gap-item-right { padding: 14px 16px; }
+  .gap-item-left { border-bottom: none; }
+
+  /* Evoque */
+  .evoque-layout { grid-template-columns: 1fr; gap: 36px; }
+
+  /* Roadmap */
+  .roadmap-intro { grid-template-columns: 1fr; gap: 24px; }
+  .system-grid { grid-template-columns: repeat(2,1fr); }
+  .scope-row { grid-template-columns: 1fr; }
+  .scope-lbl { border-right: none; border-bottom: 1px solid var(--border); }
+  .scope-desc { border-right: none; border-bottom: 1px solid var(--border); }
+  .tl-track { grid-template-columns: 1fr 1fr; row-gap: 32px; }
+  .tl-spine { display: none; }
+
+  /* Execution */
+  .epanel.on { grid-template-columns: 1fr; }
+  .eimg { min-height: 200px; }
+  .etext { padding: 32px 20px; }
+
+  /* Outcomes */
+  .outcomes-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Commercial */
+  .commercial-layout { grid-template-columns: 1fr; gap: 36px; }
+  .comm-img { display: none; }
+
+  /* Closing */
+  #closing { padding: 80px 0; }
+
+  footer { padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  .cover-h1 { font-size: 42px; }
+  h2 { font-size: 28px; }
+  .system-grid { grid-template-columns: 1fr 1fr; }
+  .outcomes-grid { grid-template-columns: 1fr; }
+  .tl-track { grid-template-columns: 1fr; }
+  .tl-spine { display: none; }
+  .btns { flex-direction: column; align-items: stretch; }
+  .btn-p, .btn-o { text-align: center; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="pbar" id="pbar"></div>
+
+<nav id="mainNav">
+  <div class="nav-logo">DarkNext × Evoque</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#context">Context</a></li>
+    <li><a href="#perception">The Gap</a></li>
+    <li><a href="#evoque">Our Role</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#execution">Execution</a></li>
+    <li><a href="#outcomes">Outcomes</a></li>
+    <li><a href="#commercial">Commercial</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#context" onclick="closeMobile()">Context</a>
+  <a href="#perception" onclick="closeMobile()">The Gap</a>
+  <a href="#evoque" onclick="closeMobile()">Our Role</a>
+  <a href="#roadmap" onclick="closeMobile()">Roadmap</a>
+  <a href="#execution" onclick="closeMobile()">Execution</a>
+  <a href="#outcomes" onclick="closeMobile()">Outcomes</a>
+  <a href="#commercial" onclick="closeMobile()">Commercial</a>
+</div>
+
+<!-- ═══ COVER ═══ -->
+<section id="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-inner">
+    <div>
+      <div class="cover-badge reveal">Proposal — Confidential · May 2026</div>
+      <h1 class="cover-h1 reveal d1">Dark<em>Next</em><br>× Evoque</h1>
+      <p class="cover-sub reveal d2">Positioning, Market Presence &amp; Growth Architecture — a strategic proposal for DarkNext's next chapter.</p>
+      <a href="#context" class="cover-cta reveal d3">Explore the proposal ↓</a>
+      <div class="stripe reveal d4" style="margin-top:28px; max-width:220px;">
+        <span style="background:var(--cobalt-mid)"></span>
+        <span style="background:var(--burgundy)"></span>
+        <span style="background:var(--lavender)"></span>
+        <span style="background:var(--amber-mid)"></span>
+        <span style="background:var(--malachite)"></span>
+      </div>
+    </div>
+    <div class="cover-right">
+      <div class="cover-stat reveal d2"><div class="cover-stat-l">The capability</div><div class="cover-stat-v">Enterprise-Level</div></div>
+      <div class="cover-stat reveal d3"><div class="cover-stat-l">The constraint</div><div class="cover-stat-v">Perception, not performance</div></div>
+      <div class="cover-stat reveal d4"><div class="cover-stat-l">The fix</div><div class="cover-stat-v">Owned marketing leadership</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ CONTEXT ═══ -->
+<section id="context" style="padding:0;">
+
+  <!-- Bold statement bar -->
+  <div class="context-statement-bar reveal">
+    <p>Cybersecurity was built for auditors.<br><em>DarkNext was built for outcomes.</em><br>The market hasn't caught up yet.</p>
+  </div>
+
+  <!-- 3 cards -->
+  <div style="max-width:1080px; margin:0 auto; padding:0 40px;">
+    <div style="padding:48px 0 0;">
+      <div class="eyebrow reveal">The Security Environment</div>
+      <h2 class="reveal">A market built on the wrong<br>incentives — until now.</h2>
+      <p class="lead reveal d1" style="max-width:640px; margin-bottom:32px;">Traditional cybersecurity firms optimised for compliance, billing cycles, and high-level findings. DarkNext chose outcome-led delivery instead. The challenge is getting the market to see it.</p>
+    </div>
+    <div class="context-cards">
+      <div class="ctx-card reveal d1">
+        <div class="ctx-card-icon">—</div>
+        <h3>Findings Without Impact</h3>
+        <p>Reports that satisfy auditors but leave real risk unaddressed. Volume over value. DarkNext identifies and reduces actual exposure.</p>
+      </div>
+      <div class="ctx-card reveal d2">
+        <div class="ctx-card-icon">—</div>
+        <h3>Compliance Over Risk</h3>
+        <p>When firms optimise for tick-box compliance, the actual security posture degrades. DarkNext is built around risk reduction — not form-filling.</p>
+      </div>
+      <div class="ctx-card reveal d3">
+        <div class="ctx-card-icon">—</div>
+        <h3>Billing Over Outcomes</h3>
+        <p>Incentives in traditional models reward time-on-site rather than results. DarkNext's credibility is built on outcomes, not hours billed.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Where you are strip -->
+  <div class="where-strip" style="margin-top:2px;">
+    <div class="where-inner">
+      <div class="where-left">
+        <div class="eyebrow reveal">Where DarkNext Is</div>
+        <h2 class="reveal">You've outgrown<br>your positioning.</h2>
+        <p class="reveal d1" style="font-size:14px; color:var(--text-mid); line-height:1.75;">Enterprise-level capability. Real delivery credibility. Measurable security outcomes. But still evaluated like a smaller vendor. That gap is not a capability problem.</p>
+      </div>
+      <div class="where-caps">
+        <div class="cap-row reveal d1">
+          <div class="cap-n">01</div>
+          <div><h4>Enterprise-Level Capability</h4><p>Execution that matches or exceeds firms charging multiples of your rate.</p></div>
+        </div>
+        <div class="cap-row reveal d2">
+          <div class="cap-n">02</div>
+          <div><h4>Strong Delivery Credibility</h4><p>Client outcomes that larger vendors would anchor entire pitch decks around.</p></div>
+        </div>
+        <div class="cap-row reveal d3">
+          <div class="cap-n">03</div>
+          <div><h4>Real Security Impact</h4><p>Not compliance theatre. Actual risk reduction — the kind enterprises need and rarely find.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ PERCEPTION GAP ═══ -->
+<section id="perception" style="padding:0;">
+  <div class="perception-bg"></div>
+  <div class="perception-inner">
+    <div class="perception-label reveal">The Perception Gap</div>
+    <h2 class="perception-headline reveal d1">The market doesn't see<br>what DarkNext <em>actually is.</em></h2>
+
+    <div class="gap-grid reveal d2">
+      <div>
+        <div class="gap-col-label">What the market sees</div>
+        <div class="gap-col-left">
+          <div class="gap-item-left"><p>One of many cybersecurity vendors</p></div>
+          <div class="gap-item-left"><p>Late-stage consideration, not early inclusion</p></div>
+          <div class="gap-item-left"><p>Referral-dependent, not pipeline-driven</p></div>
+          <div class="gap-item-left"><p>Evaluated like a smaller firm</p></div>
+        </div>
+      </div>
+      <div class="gap-arrows">
+        <div style="height:22px;"></div>
+        <div class="gap-arr-cell">→</div>
+        <div class="gap-arr-cell">→</div>
+        <div class="gap-arr-cell">→</div>
+        <div class="gap-arr-cell">→</div>
+      </div>
+      <div>
+        <div class="gap-col-label right-label">What DarkNext actually is</div>
+        <div class="gap-col-right">
+          <div class="gap-item-right highlight"><p>Outcome-led, high-impact security operator</p></div>
+          <div class="gap-item-right highlight"><p>Enterprise-ready, early in the conversation</p></div>
+          <div class="gap-item-right highlight"><p>A system that generates pipeline consistently</p></div>
+          <div class="gap-item-right highlight"><p>Capability that competes with the largest firms</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="perception-note reveal d3">
+      <p>This gap is not a capability problem. It is a positioning and visibility problem — and it is entirely solvable. That is the work Evoque owns.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ EVOQUE ROLE ═══ -->
+<section id="evoque">
+  <div class="container">
+    <div class="evoque-layout">
+      <div class="evoque-img reveal">
+        <img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=900&q=85&auto=format&fit=crop" alt="Landscape sunrise">
+      </div>
+      <div>
+        <div class="eyebrow reveal">Where Evoque Comes In</div>
+        <h2 class="reveal">The marketing leadership<br>layer <em>inside</em> the business.</h2>
+        <p class="lead reveal d1" style="max-width:100%;">Evoque operates embedded — not as an agency briefed on deliverables, but as the marketing function itself. Owning strategy, execution, and accountability for outcomes.</p>
+        <ul class="evoque-list reveal d2">
+          <li>Fractional CMO embedded within your team</li>
+          <li>Defines positioning and market strategy</li>
+          <li>Owns execution end to end</li>
+          <li>Builds and manages the full ecosystem</li>
+          <li>Accountable for perception and pipeline</li>
+        </ul>
+        <div class="not-advisory reveal d3">
+          <p>This is not advisory. This is <strong>ownership.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ ROADMAP: BUILD + SCOPE + TIMELINE ═══ -->
+<section id="roadmap">
+  <div class="container">
+
+    <div class="roadmap-intro">
+      <div>
+        <div class="eyebrow reveal">The Roadmap</div>
+        <h2 class="reveal">What gets built,<br>when, and at<br>what <em>investment.</em></h2>
+      </div>
+      <div class="reveal d1" style="padding-top:12px;">
+        <p class="lead" style="font-size:15px; line-height:1.82;">Six integrated components. Four layers of scope. A phased timeline that moves from foundations to market presence within six months. The budget split below separates one-time build costs from ongoing monthly investment — so you can plan clearly.</p>
+      </div>
+    </div>
+
+    <!-- System blocks -->
+    <div class="eyebrow reveal" style="margin-bottom:10px;">The six components</div>
+    <div class="system-grid reveal d1" style="margin-bottom:28px;">
+      <div class="sys-block"><div class="sys-n">01</div><h3>Positioning</h3></div>
+      <div class="sys-block"><div class="sys-n">02</div><h3>Narrative</h3></div>
+      <div class="sys-block"><div class="sys-n">03</div><h3>Website</h3></div>
+      <div class="sys-block"><div class="sys-n">04</div><h3>Visibility</h3></div>
+      <div class="sys-block"><div class="sys-n">05</div><h3>Demand</h3></div>
+      <div class="sys-block"><div class="sys-n">06</div><h3>Proof</h3></div>
+    </div>
+
+    <!-- Scope rows with budget -->
+    <div class="eyebrow reveal" style="margin-bottom:10px;">Scope of work — with budget type</div>
+    <div class="scope-layers">
+      <div class="scope-row reveal d1">
+        <div class="scope-lbl"><div class="scope-n">Layer 01</div><h4>Positioning &amp; Brand Foundation</h4></div>
+        <div class="scope-desc">Define positioning, narrative, and brand identity aligned to enterprise expectations. The strategic anchor from which all work flows.</div>
+        <div class="scope-budget-cell">
+          <span class="scope-tag tag-ot">One-Time</span>
+          <span class="small">Positioning doc, narrative framework, brand system</span>
+        </div>
+      </div>
+      <div class="scope-row reveal d2">
+        <div class="scope-lbl"><div class="scope-n">Layer 02</div><h4>Digital Presence</h4></div>
+        <div class="scope-desc">Website revamp plus ongoing content across LinkedIn, Instagram, and founder profiles. Every channel telling the same story.</div>
+        <div class="scope-budget-cell">
+          <span class="scope-tag tag-ot">One-Time</span>
+          <span class="small">Website build &amp; launch</span>
+          <span class="scope-tag tag-rt" style="margin-top:4px;">Monthly Retainer</span>
+          <span class="small">Content, social, founder visibility</span>
+        </div>
+      </div>
+      <div class="scope-row reveal d3">
+        <div class="scope-lbl"><div class="scope-n">Layer 03</div><h4>Demand Generation</h4></div>
+        <div class="scope-desc">SEO and AEO supported by performance marketing. Capturing active demand from RBI, SEBI CSCRF, DPDPA, VAPT, and Red Teaming searches.</div>
+        <div class="scope-budget-cell">
+          <span class="scope-tag tag-ot">One-Time</span>
+          <span class="small">Technical SEO audit &amp; setup</span>
+          <span class="scope-tag tag-rt" style="margin-top:4px;">Monthly Retainer</span>
+          <span class="small">SEO execution, paid campaigns</span>
+        </div>
+      </div>
+      <div class="scope-row reveal d4">
+        <div class="scope-lbl"><div class="scope-n">Layer 04</div><h4>Market Presence</h4></div>
+        <div class="scope-desc">Event support from conceptualisation to execution. Partner programme with certifying bodies and system integrators.</div>
+        <div class="scope-budget-cell">
+          <span class="scope-tag tag-ot">One-Time</span>
+          <span class="small">Partner programme architecture</span>
+          <span class="scope-tag tag-rt" style="margin-top:4px;">Monthly Retainer</span>
+          <span class="small">Events, partner activation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="budget-note-bar reveal d2">One-time investments are built once and owned permanently by DarkNext. Monthly retainer items form the operational growth engine. Exact pricing is discussed in the commercial conversation.</div>
+
+    <!-- Timeline -->
+    <div class="timeline-header">
+      <div class="eyebrow reveal">Engagement timeline</div>
+      <h2 class="reveal" style="font-size:clamp(24px, 3vw, 38px); margin-bottom:8px;">Foundation to market presence<br>in <em>six months.</em></h2>
+    </div>
+
+    <div class="tl-track reveal d1">
+      <div class="tl-spine"></div>
+      <div class="tl-node">
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-period">Month 1–2</div>
+        <div class="tl-phase">Foundation</div>
+        <ul class="tl-items">
+          <li>Positioning &amp; narrative</li>
+          <li>Brand identity system</li>
+          <li>Messaging architecture</li>
+          <li>SEO technical audit</li>
+        </ul>
+      </div>
+      <div class="tl-node">
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-period">Month 2–4</div>
+        <div class="tl-phase">Build</div>
+        <ul class="tl-items">
+          <li>Website redesign &amp; launch</li>
+          <li>Founder content live</li>
+          <li>Case studies developed</li>
+          <li>Partner framework</li>
+        </ul>
+      </div>
+      <div class="tl-node">
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-period">Month 4–6</div>
+        <div class="tl-phase">Activate</div>
+        <ul class="tl-items">
+          <li>SEO &amp; AEO programme live</li>
+          <li>Performance marketing on</li>
+          <li>Event activations begin</li>
+          <li>Pipeline tracking active</li>
+        </ul>
+      </div>
+      <div class="tl-node">
+        <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+        <div class="tl-period">Month 6+</div>
+        <div class="tl-phase">Compound</div>
+        <ul class="tl-items">
+          <li>Enterprise conversations open</li>
+          <li>Inbound pipeline growing</li>
+          <li>Brand perception shifting</li>
+          <li>Scale decisions made</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tl-legend reveal d2">
+      <div class="tl-leg"><div class="tl-leg-dot" style="background:var(--cobalt)"></div>One-time build</div>
+      <div class="tl-leg"><div class="tl-leg-dot" style="background:var(--amber-mid)"></div>Retainer begins</div>
+      <div class="tl-leg"><div class="tl-leg-dot" style="background:var(--malachite)"></div>Full retainer live</div>
+      <div class="tl-leg"><div class="tl-leg-dot" style="background:var(--burgundy)"></div>Ongoing &amp; scaling</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ EXECUTION ═══ -->
+<section id="execution">
+  <div class="container">
+    <div class="eyebrow reveal">Execution</div>
+    <h2 class="reveal" style="margin-bottom:24px;">How each layer<br>gets <em>delivered.</em></h2>
+    <div class="exec-tabs reveal d1">
+      <button class="etab on" onclick="switchTab(0)">Positioning</button>
+      <button class="etab" onclick="switchTab(1)">Website</button>
+      <button class="etab" onclick="switchTab(2)">Thought Leadership</button>
+      <button class="etab" onclick="switchTab(3)">SEO &amp; AEO</button>
+      <button class="etab" onclick="switchTab(4)">Proof Layer</button>
+      <button class="etab" onclick="switchTab(5)">Partners</button>
+    </div>
+    <div class="reveal d2">
+      <div class="epanel on">
+        <div class="etext">
+          <div class="eyebrow">From → To</div>
+          <h3>Outcome-led cybersecurity partner focused on real risk reduction.</h3>
+          <p>Not a services firm. A partner with a defined point of view on what security should actually accomplish. This positioning unlocks enterprise-level conversations from day one — and reduces the reliance on referrals.</p>
+          <div class="etags"><span class="etag">Brand Identity</span><span class="etag">Narrative Framework</span><span class="etag">Enterprise Messaging</span></div>
+        </div>
+        <div class="eimg"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=700&q=80&auto=format&fit=crop&crop=center" alt="Valley landscape"></div>
+      </div>
+      <div class="epanel">
+        <div class="etext">
+          <div class="eyebrow">First Sales Layer</div>
+          <h3>Your website becomes the first sales conversation, not a brochure.</h3>
+          <p>Outcome-led structure. Clear differentiation. Early proof. Enterprise-ready presence. The site does work before a single call is made — qualifying, positioning, and building trust at scale.</p>
+          <div class="etags"><span class="etag">UX Strategy</span><span class="etag">Conversion Design</span><span class="etag">Outcome Architecture</span></div>
+        </div>
+        <div class="eimg"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=700&q=80&auto=format&fit=crop" alt="Golden light valley"></div>
+      </div>
+      <div class="epanel">
+        <div class="etext">
+          <div class="eyebrow">Founder-Led Visibility</div>
+          <h3>Technical. Opinionated. Present where decisions begin.</h3>
+          <p>Real-world insights and industry commentary that builds authority over time. Not content for content's sake — a deliberate visibility strategy that earns trust before the sales conversation begins.</p>
+          <div class="etags"><span class="etag">LinkedIn</span><span class="etag">Industry Commentary</span><span class="etag">POV Content</span></div>
+        </div>
+        <div class="eimg"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=700&q=80&auto=format&fit=crop" alt="Forest light"></div>
+      </div>
+      <div class="epanel">
+        <div class="etext">
+          <div class="eyebrow">Capture Active Demand</div>
+          <h3>Be found when the buying decision is already forming.</h3>
+          <p>When companies search for RBI audit support, SEBI CSCRF compliance, DPDPA guidance, VAPT, or Red Teaming — DarkNext surfaces as the answer. Not an afterthought.</p>
+          <div class="etags"><span class="etag">RBI Audits</span><span class="etag">SEBI CSCRF</span><span class="etag">DPDPA</span><span class="etag">VAPT</span><span class="etag">Red Teaming</span></div>
+        </div>
+        <div class="eimg"><img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=700&q=80&auto=format&fit=crop" alt="Open panorama"></div>
+      </div>
+      <div class="epanel">
+        <div class="etext">
+          <div class="eyebrow">Reduces Sales Friction</div>
+          <h3>Credibility that does the heavy lifting before the room.</h3>
+          <p>Case studies, measurable outcomes, and proof formats that speak directly to enterprise buyers. Evidence that reduces perceived risk and shortens the sales cycle.</p>
+          <div class="etags"><span class="etag">Case Studies</span><span class="etag">Measurable Outcomes</span><span class="etag">Credibility Architecture</span></div>
+        </div>
+        <div class="eimg"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=700&q=80&auto=format&fit=crop" alt="Mountain skyline"></div>
+      </div>
+      <div class="epanel">
+        <div class="etext">
+          <div class="eyebrow">Repeatable Pipeline</div>
+          <h3>A partner network built to compound over time.</h3>
+          <p>Certifying bodies, system integrators, and strategic partners as structured growth channels — not one-off relationships, but a programme that builds pipeline beyond the direct sales effort.</p>
+          <div class="etags"><span class="etag">Certifying Bodies</span><span class="etag">System Integrators</span><span class="etag">Strategic Partners</span></div>
+        </div>
+        <div class="eimg"><img src="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=700&q=80&auto=format&fit=crop" alt="Sunrise landscape"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ OUTCOMES ═══ -->
+<section id="outcomes">
+  <div class="outcomes-bg"></div>
+  <div class="container">
+    <div class="outcomes-inner">
+      <div class="eyebrow reveal">Outcomes</div>
+      <h2 class="reveal">The markers<br>we move <em>toward.</em></h2>
+      <div class="outcomes-grid">
+        <div class="outcome-card reveal d1">
+          <h4>Enterprise Conversations</h4>
+          <p>Entry into deals and discussions that previously went to larger, more recognisable firms.</p>
+        </div>
+        <div class="outcome-card reveal d2">
+          <h4>Shift in Perception</h4>
+          <p>How DarkNext is evaluated versus larger competitors at the point of decision.</p>
+        </div>
+        <div class="outcome-card reveal d3">
+          <h4>Pipeline Beyond Referrals</h4>
+          <p>Inbound demand from channels that don't depend on individual relationships.</p>
+        </div>
+        <div class="outcome-card reveal d4">
+          <h4>Marketing as Revenue</h4>
+          <p>A marketing function that is a measurable contributor to growth — not a cost centre.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ COMMERCIAL ═══ -->
+<section id="commercial">
+  <div class="container">
+    <div class="commercial-layout">
+      <div>
+        <div class="eyebrow reveal">Commercial Model</div>
+        <h2 class="reveal">Built for how<br>growth <em>actually</em> works.</h2>
+        <p class="lead reveal d1" style="font-size:15px; max-width:100%; line-height:1.82;">Structured to give Evoque full ownership while keeping the model flexible as DarkNext scales. The engagement is built in layers — so investment aligns to programme maturity.</p>
+        <div class="model-list">
+          <div class="mcard reveal d1">
+            <span class="mpill">Core</span>
+            <h4>Retainer — Leadership + Execution</h4>
+            <p>Strategy, management, and full execution ownership in a single engagement. No fragmented briefs, no agency handoffs.</p>
+          </div>
+          <div class="mcard reveal d2">
+            <span class="mpill">Flexible</span>
+            <h4>Execution Layered As Required</h4>
+            <p>Additional capacity added as the programme grows — without restructuring the engagement or changing the relationship.</p>
+          </div>
+          <div class="mcard reveal d3">
+            <span class="mpill">Optional</span>
+            <h4>Performance Alignment</h4>
+            <p>Where appropriate, aligning Evoque's commercial interest directly to DarkNext's growth outcomes.</p>
+          </div>
+        </div>
+      </div>
+      <div class="comm-img reveal d2">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80&auto=format&fit=crop" alt="Mountain starfield">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══ CLOSING ═══ -->
+<section id="closing">
+  <div class="closing-bg"></div>
+  <div class="container">
+    <div class="closing-content">
+      <div class="eyebrow reveal">Close</div>
+      <h2 class="reveal">DarkNext has built<br>the <em>capability.</em></h2>
+      <div class="closing-lines reveal d1">
+        <div class="cl">What's missing is how it is understood.</div>
+        <div class="cl" style="font-size:17px; color:var(--text-muted); margin-top:2px;">That is what we fix.</div>
+      </div>
+      <p class="reveal d2">Ready to begin the conversation? Evoque is.</p>
+      <div class="btns reveal d3">
+        <a href="mailto:hello@evoqueconsulting.com" class="btn-p">Begin the conversation →</a>
+        <a href="#context" class="btn-o">Read again ↑</a>
+      </div>
+      <div class="stripe reveal d4" style="width:110px; margin-top:6px;">
+        <span style="background:var(--cobalt-mid)"></span>
+        <span style="background:var(--burgundy)"></span>
+        <span style="background:var(--lavender)"></span>
+        <span style="background:var(--amber-mid)"></span>
+        <span style="background:var(--malachite)"></span>
+      </div>
+      <p class="sig reveal d4">Evoque Consulting · May 2026 · Prepared for DarkNext</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Evoque Consulting. Confidential.</span>
+  <span>DarkNext × Evoque — Growth Architecture Proposal</span>
+</footer>
+
+<script>
+// Progress bar
+const pbar = document.getElementById('pbar');
+window.addEventListener('scroll', () => {
+  const h = document.body.scrollHeight - window.innerHeight;
+  pbar.style.width = (h > 0 ? (window.scrollY / h * 100) : 0) + '%';
+}, { passive: true });
+
+// Reveal on scroll
+document.querySelectorAll('.reveal').forEach(el => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' }).observe(el);
+});
+
+// Active nav highlight
+const sections = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+const ioNav = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navAs.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+      });
+    }
+  });
+}, { threshold: 0.35 });
+sections.forEach(s => ioNav.observe(s));
+
+// Mobile menu
+const toggle = document.getElementById('navToggle');
+const menu = document.getElementById('mobileMenu');
+toggle.addEventListener('click', () => menu.classList.toggle('open'));
+function closeMobile() { menu.classList.remove('open'); }
+
+// Exec tabs
+function switchTab(i) {
+  document.querySelectorAll('.etab').forEach((t, j) => t.classList.toggle('on', i === j));
+  document.querySelectorAll('.epanel').forEach((p, j) => p.classList.toggle('on', i === j));
+}
+</script>
+</body>
+</html>
